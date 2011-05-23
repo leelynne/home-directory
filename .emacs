@@ -53,6 +53,11 @@
 (setq display-time-day-and-date t display-time-24hr-format t)
 (display-time)
 
+(global-font-lock-mode t)
+
+;; put backup files in their own directory
+(setq backup-directory-alist `(("." . ,(expand-file-name "~/.emacs-backups"))))
+
 (require 'ecb)
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
