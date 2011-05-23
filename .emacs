@@ -30,6 +30,10 @@
 
 (add-to-list 'load-path "/home/leef/emacs/ecb-2.40")
 
+;; enable ansi color
+(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
 (require 'ecb)
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
