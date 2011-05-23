@@ -34,6 +34,25 @@
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+;; ruby
+(autoload 'ruby-mode "ruby-mode" "Major mode for editing ruby scripts." t)
+(setq auto-mode-alist  (cons '(".rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("^recs\-[.]*" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '(".rhtml$" . html-mode) auto-mode-alist))
+
+;; enable visual feedback on selections
+(setq transient-mark-mode t)
+
+;; Add F12 to toggle line wrap
+(global-set-key [f12] 'toggle-truncate-lines)
+
+;; enable password hiding
+(add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)
+
+;; dired reuse
+(setq display-time-day-and-date t display-time-24hr-format t)
+(display-time)
+
 (require 'ecb)
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
