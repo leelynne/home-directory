@@ -1,0 +1,3 @@
+hardstatus alwayslastline
+hardstatus string '%{= kB}%-Lw%{+r}%50> %n%f* %t%{= kB}%+Lw%< %{= kB}%-= %{-}'
+startup_message off
