@@ -28,7 +28,7 @@
 (global-srecode-minor-mode 1)            ; Enable template insertion menu
 (semantic-load-enable-minimum-features)
 
-(add-to-list 'load-path "/home/leef/emacs/ecb-2.40")
+(add-to-list 'load-path "~/emacs/ecb-2.40")
 
 ;; enable ansi color
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
