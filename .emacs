@@ -10,7 +10,8 @@
 
 (setq c-basic-offset 4) ; indents 4 chars
 (setq tab-width 4)          ; and 4 char wide for TAB
-(setq indent-tabs-mode nil) ; And force use of spaces
+
+(setq-default indent-tabs-mode nil) ; And force use of spaces
 (setq inhibit-startup-message t) ; disable start message
 
 (add-to-list 'auto-mode-alist '("\\.el\\'" . emacs-lisp-mode))
@@ -20,6 +21,8 @@
 (add-to-list 'auto-mode-alist '("\\.cpp$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.c$" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.h$" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . javascript-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . javascript-mode))
 
 ;; cedet
 (load-file "~/emacs/cedet-1.0/common/cedet.el")
@@ -34,9 +37,18 @@
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
+;; shell stuff
+(setq ansi-color-names-vector ; better contrast colors
+      ["black" "red4" "green4" "yellow4"
+       "blue3" "magenta4" "cyan4" "white"])
+;; Read only prompt
+(add-hook 'shell-mode-hook 
+     '(lambda () (toggle-truncate-lines 1)))
+(setq comint-prompt-read-only t)
 ;; ruby
 (autoload 'ruby-mode "ruby-mode" "Major mode for editing ruby scripts." t)
 (setq auto-mode-alist  (cons '(".rb$" . ruby-mode) auto-mode-alist))
+(setq auto-mode-alist  (cons '("Rakefile" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist  (cons '("^recs\-[.]*" . ruby-mode) auto-mode-alist))
 (setq auto-mode-alist  (cons '(".rhtml$" . html-mode) auto-mode-alist))
 
