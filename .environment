@@ -1,0 +1,5 @@
+export CVSEDITOR='emacsclient -s $DISPLAY -c -a ""'
+export EDITOR='emacsclient -s $DISPLAY -c -a ""'
+export ESHELL=/bin/bash
+
+

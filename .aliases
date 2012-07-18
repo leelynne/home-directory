@@ -1,0 +1,5 @@
+alias ec='emacsclient -c -s $DISPLAY -a "" $*'
+alias ls='ls --color -la'
+alias vi='vim'
+alias scp='/usr/bin/scp -2'
+
