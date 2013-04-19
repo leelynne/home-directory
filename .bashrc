@@ -15,11 +15,9 @@ function prompt
   }
 
 export PS1="\u@\h:\$(prompt)> "
-if ! /usr/kerberos/bin/klist -s; then 
-    if [ -t 0 ]; then
-        stty -echo;/usr/kerberos/bin/kinit -f; stty echo;
-    fi
-fi
 
 source ~/.environment
 source ~/.aliases
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
