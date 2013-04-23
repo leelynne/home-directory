@@ -18,6 +18,7 @@ export PS1="\u@\h:\$(prompt)> "
 
 source ~/.environment
 source ~/.aliases
+source ~/.local_environment
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
