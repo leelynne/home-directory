@@ -9,5 +9,3 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 export CVSEDITOR='emacsclient -s $DISPLAY -c -a ""'
 export EDITOR='emacsclient -s $DISPLAY -c -a ""'
 export ESHELL=/bin/bash
-
-
