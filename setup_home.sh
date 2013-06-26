@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-for file in .aliases .environment .bashrc .bash_profile .tmux.conf
+for file in .aliases .environment .bashrc .bash_profile .tmux.conf .xprofile
 do
     ln -s $DIR/$file $HOME
 done
