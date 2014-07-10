@@ -27,11 +27,17 @@
 ;; Map code jumping to tags
 (add-hook 'go-mode-hook (lambda ()
                           (local-set-key (kbd "M-.") 'godef-jump)))
+;; Use goimports with is gofmt + automatic include adding/removing
+(setq gofmt-command "goimports")
 
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
 (define-key flycheck-mode-map (kbd "C-,") #'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-.") #'flycheck-next-error)
 
+(setq default-tab-width 4)
+
 (when window-system (set-frame-size (selected-frame) 160 48))
+
+(setq whitespace-line-column 200)
 ;;; myinit.el ends here

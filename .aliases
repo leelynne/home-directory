@@ -6,3 +6,5 @@ alias scp='/usr/bin/scp -2'
 
 alias jsonpp='python -mjson.tool'
 alias foundry='ssh -p 22768 -i /home/leef/wire/build-deploy/pems/prod_pdx.pem -o StrictHostKeyChecking=no ubuntu@10.0.11.23'
+alias awssh='ssh -p 22768 -i /home/leef/wire/build-deploy/pems/prod_pdx.pem -o StrictHostKeyChecking=no ubuntu@$1'
+alias gop='cd $GOPATH/src/github.com/Wire'
