@@ -30,6 +30,26 @@
 ;; Use goimports with is gofmt + automatic include adding/removing
 (setq gofmt-command "goimports")
 
+;; Java
+;; Eclim
+(custom-set-variables
+ '(eclim-eclipse-dirs '("~/apps/eclipse"))
+ '(eclim-executable "~/apps/eclipse/eclim"))
+
+(require 'eclim)
+(global-eclim-mode)
+(require 'eclimd)
+
+(require 'company-emacs-eclim)
+(company-emacs-eclim-setup)
+(global-company-mode t)
+
+(add-hook 'java-mode-hook (lambda ()
+                          (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
+                          (eclim-mode t)
+                          (start-eclimd "~/eclipsews")
+))
+
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
 (define-key flycheck-mode-map (kbd "C-,") #'flycheck-previous-error)
