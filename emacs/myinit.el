@@ -34,7 +34,9 @@
 ;; Eclim
 (custom-set-variables
  '(eclim-eclipse-dirs '("~/apps/eclipse"))
- '(eclim-executable "~/apps/eclipse/eclim"))
+ '(eclim-executable "~/apps/eclipse/eclim")
+ '(eclimd-default-workspace "~/eclipsews")
+)
 
 (require 'eclim)
 (global-eclim-mode)
