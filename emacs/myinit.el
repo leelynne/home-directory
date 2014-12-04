@@ -5,7 +5,6 @@
 
 ;; Auto-complete stuff
 (require 'auto-complete-config)
-(require 'go-autocomplete)
 (require 'ac-helm)
 (require 'ac-inf-ruby)
 
@@ -26,7 +25,11 @@
 (require 'company-go)
 ;; Map code jumping to tags
 (add-hook 'go-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'godef-jump)))
+                          (local-set-key (kbd "M-.") 'godef-jump)
+                          (local-set-key (kbd "<C-tab>") 'company-complete)
+                          (local-set-key (kbd "C-c C-r") 'go-rename)
+                          ;; Company mode rulz
+                          (auto-complete-mode 0)))
 ;; Use goimports with is gofmt + automatic include adding/removing
 (setq gofmt-command "goimports")
 
