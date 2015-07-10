@@ -65,6 +65,26 @@
                           (start-eclimd "~/eclipsews")
 ))
 
+;; PHP
+(require 'php-mode)
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+(add-hook 'php-mode-hook (lambda ()
+                           ;; stop whitespace being highlighted
+                           (setq indent-tabs-mode t)
+                           (whitespace-toggle-options '(tabs))
+                           (local-set-key [f5] 'my-php-debug)
+                           ))
+;; Debug a simple PHP script.
+;; Change the session key my-php-54 to any session key text you like
+(defun my-php-debug ()
+  "Run current PHP script for debugging with geben."
+  (interactive)
+  (call-interactively 'geben)
+  (shell-command
+   (concat "XDEBUG_CONFIG='idekey=my-php-55' /usr/bin/php "
+           (buffer-file-name) " &"))
+  )
+
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
 (define-key flycheck-mode-map (kbd "C-,") #'flycheck-previous-error)
