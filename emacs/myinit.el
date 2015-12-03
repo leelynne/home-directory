@@ -85,6 +85,10 @@
            (buffer-file-name) " &"))
   )
 
+;; scala
+(require 'ensime)
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
 (define-key flycheck-mode-map (kbd "C-,") #'flycheck-previous-error)

@@ -3,8 +3,7 @@ alias ec='emacsclient -c -s $DISPLAY -a "" $*'
 alias ls='ls --color -la'
 alias vi='vim'
 alias scp='/usr/bin/scp -2'
-
+alias forge='docker run -it --rm -v $PWD:/app -v $SSH_AUTH_SOCK:/ssh-agent -e USER=$USER -e UID=`id -u` -e GID=`id -g` remitly/forge'
 alias jsonpp='python -mjson.tool'
-alias foundry='ssh -p 22768 -i /home/leef/wire/build-deploy/pems/prod_pdx.pem -o StrictHostKeyChecking=no ubuntu@10.0.11.23'
-alias awssh='ssh -p 22768 -i /home/leef/wire/build-deploy/pems/prod_pdx.pem -o StrictHostKeyChecking=no ubuntu@$1'
-alias gop='cd $GOPATH/src/github.com/Wire'
+
+

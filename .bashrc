@@ -16,6 +16,8 @@ function prompt
 
 export PS1="\u@\h:\$(prompt)> "
 
+if [[ \$TMUX ]]; then source ~/.tmux/.tmux-git/tmux-git.sh; fi
+
 source ~/.environment
 source ~/.aliases
 source ~/.local_environment
