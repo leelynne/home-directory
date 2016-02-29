@@ -3,7 +3,6 @@ alias ec='emacsclient -c -s $DISPLAY -a "" $*'
 alias ls='ls --color -la'
 alias vi='vim'
 alias scp='/usr/bin/scp -2'
-alias forge='docker run -it --rm -v $PWD:/app -v $SSH_AUTH_SOCK:/ssh-agent -e USER=$USER -e UID=`id -u` -e GID=`id -g` remitly/forge'
 alias jsonpp='python -mjson.tool'
-
+alias sshf='ssh -o StrictHostKeyChecking=no -i ~/remitly/internal_pdx.pem ubuntu@$1'
 

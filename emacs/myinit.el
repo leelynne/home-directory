@@ -49,30 +49,42 @@
 (company-emacs-eclim-setup)
 (global-company-mode t)
 
+
+
 (add-hook 'java-mode-hook (lambda ()
                           (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
                           (local-set-key (kbd "<C-tab>") 'company-complete)
-                          (local-set-key (kbd "C-S-o") 'eclim-java-import-organize)
+                          (local-set-key (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
+                          (local-set-key (kbd "C-.") 'eclim-problems-next)
+                          (local-set-key (kbd "C-h f") 'eclim-java-show-documentation-for-current-element)
+                          (local-set-key (kbd "C-c c") 'project-update-classpath)
                           ;; eclim mode always on for java
                           (eclim-mode t)
                           ;; Company mode rulz
                           (auto-complete-mode 0)
-                          ;; Show error message is echo buffer
+                          ;; Show error message in echo buffer
                           (setq help-at-pt-display-when-idle t)
                           (setq help-at-pt-timer-delay 0.1)
                           (help-at-pt-set-timer)
                           ;; Start the daemon
                           (start-eclimd "~/eclipsews")
 ))
+(defun project-update-classpath ()
+  "Update classpath for current project."
+  (interactive)
+  (eclim--maven-execute "eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true")
+  )
 
 ;; PHP
 (require 'php-mode)
+(setq flycheck-phpcs-standard "~/styles/phprules.xml")
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-hook 'php-mode-hook (lambda ()
                            ;; stop whitespace being highlighted
                            (setq indent-tabs-mode t)
                            (whitespace-toggle-options '(tabs))
                            (local-set-key [f5] 'my-php-debug)
+                           (php-eldoc-enable)
                            ))
 ;; Debug a simple PHP script.
 ;; Change the session key my-php-54 to any session key text you like

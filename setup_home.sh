@@ -6,7 +6,3 @@ for file in .aliases .environment .bashrc .bash_profile .tmux.conf .xprofile .Xr
 do
     ln -s $DIR/$file $HOME
 done
-
-# Install Prelude
-export PRELUDE_URL="https://github.com/leelynne/prelude.git"
-curl -L https://github.com/bbatsov/prelude/raw/master/utils/installer.sh | sh
