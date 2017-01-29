@@ -66,26 +66,32 @@
                           (setq help-at-pt-display-when-idle t)
                           (setq help-at-pt-timer-delay 0.1)
                           (help-at-pt-set-timer)
+                          ;; Spaces for tabs
+                          (setq-default indent-tabs-mode nil)
                           ;; Start the daemon
                           (start-eclimd "~/eclipsews")
 ))
 (defun project-update-classpath ()
   "Update classpath for current project."
   (interactive)
-  (eclim--maven-execute "eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true")
+  (eclim--maven-execute "eclipse:eclipse -DdownloadJavadocs=true")
   )
 
+;; JCS
+(require 'rjsx-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+
 ;; PHP
-(require 'php-mode)
-(setq flycheck-phpcs-standard "~/styles/phprules.xml")
-(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
-(add-hook 'php-mode-hook (lambda ()
+;;(require 'php-mode)
+;;(setq flycheck-phpcs-standard "~/styles/phprules.xml")
+;;(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+;;(add-hook 'php-mode-hook (lambda ()
                            ;; stop whitespace being highlighted
-                           (setq indent-tabs-mode t)
-                           (whitespace-toggle-options '(tabs))
-                           (local-set-key [f5] 'my-php-debug)
-                           (php-eldoc-enable)
-                           ))
+;;                           (setq indent-tabs-mode t)
+;;                           (whitespace-toggle-options '(tabs))
+;;                           (local-set-key [f5] 'my-php-debug)
+;;                           (php-eldoc-enable)
+;;                           ))
 ;; Debug a simple PHP script.
 ;; Change the session key my-php-54 to any session key text you like
 (defun my-php-debug ()
@@ -113,4 +119,11 @@
 (setq whitespace-line-column 200)
 ;; Don't stop on first "error"
 (setq compilation-scroll-output 1)
+
+;; Use visual-line-mode in gfm-mode
+(defun my-gfm-mode-hook ()
+  "Use the 'marked' tool to display github flavored markdown."
+  (setq markdown-command "marked --gfm"))
+(add-hook 'gfm-mode-hook 'my-gfm-mode-hook)
+
 ;;; myinit.el ends here

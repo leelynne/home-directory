@@ -1,8 +1,7 @@
-
 alias ec='emacsclient -c -s $DISPLAY -a "" $*'
 alias ls='ls --color -la'
 alias vi='vim'
 alias scp='/usr/bin/scp -2'
 alias jsonpp='python -mjson.tool'
-alias sshf='ssh -o StrictHostKeyChecking=no -i ~/remitly/internal_pdx.pem ubuntu@$1'
+alias sshf='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ~/remitly/internal_pdx.pem'
 
