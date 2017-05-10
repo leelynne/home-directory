@@ -1,3 +1,11 @@
 source ~/.bashrc
-export HISTFILE="${HOME}/.history.d/history-"`tty | cut -d'/' -f 4`"."`date +"%s"`
-eval "$(rbenv init -)"
+
+if [[ "$OSTYPE" =~ ^darwin ]];then
+    plat='darwin'
+else
+    plat='linux'
+    ttyname=`tty | cut -d'/' -f 4`
+    export HISTFILE="${HOME}/.history.d/history-$ttyname.`date +"%s"`"
+fi
+
+

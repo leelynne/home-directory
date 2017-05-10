@@ -21,4 +21,3 @@ if [[ \$TMUX ]]; then source ~/.tmux/.tmux-git/tmux-git.sh; fi
 source ~/.environment
 source ~/.aliases
 source ~/.local_environment
-export PATH="$HOME/.rbenv/bin:$PATH"

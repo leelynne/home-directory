@@ -3,6 +3,8 @@
 ;;
 ;;; Code:
 
+(prelude-require-packages '(ac-helm ac-inf-ruby company company-go company-emacs-eclim auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe dired+ rjsx-mode ensime))
+
 ;; Auto-complete stuff
 (require 'auto-complete-config)
 (require 'ac-helm)
@@ -25,13 +27,18 @@
 (require 'company-go)
 ;; Map code jumping to tags
 (add-hook 'go-mode-hook (lambda ()
+                          (setq gofmt-command "goimports")
+                          (add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'godef-jump)
                           (local-set-key (kbd "<C-tab>") 'company-complete)
                           (local-set-key (kbd "C-c C-r") 'go-rename)
                           ;; Company mode rulz
-                          (auto-complete-mode 0)))
+                          (auto-complete-mode 0)
+                          
+                          ))
 ;; Use goimports with is gofmt + automatic include adding/removing
-(setq gofmt-command "goimports")
+
+
 
 ;; Java
 ;; Eclim
@@ -109,10 +116,14 @@
 
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
+(global-flycheck-mode)
 (define-key flycheck-mode-map (kbd "C-,") #'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-.") #'flycheck-next-error)
 
-(setq default-tab-width 4)
+;; Helm good
+(require 'prelude-helm-everywhere)
+
+(setq tab-width 4)
 
 (when window-system (set-frame-size (selected-frame) 160 48))
 

@@ -1,5 +1,4 @@
-alias ec='emacsclient -c -s $DISPLAY -a "" $*'
-alias ls='ls --color -la'
+alias ls='ls -lAG'
 alias vi='vim'
 alias scp='/usr/bin/scp -2'
 alias jsonpp='python -mjson.tool'
