@@ -3,7 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(ac-helm ac-inf-ruby company company-go company-emacs-eclim auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe dired+ rjsx-mode ensime))
+(prelude-require-packages '(ac-helm ac-inf-ruby company company-go company-emacs-eclim auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode ensime terraform-mode company-terraform))
 
 ;; Auto-complete stuff
 (require 'auto-complete-config)
@@ -23,18 +23,19 @@
 (setq company-echo-delay 0)
 
 ;; Go
-(require 'go-mode)
-(require 'company-go)
-;; Map code jumping to tags
+;; Mostly relying on prelude's go module now
+;;(require 'go-mode)
+;;(require 'company-go)
+
 (add-hook 'go-mode-hook (lambda ()
-                          (setq gofmt-command "goimports")
-                          (add-hook 'before-save-hook 'gofmt-before-save)
+                          ;;(setq gofmt-command "goimports")
+                          ;;(add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'godef-jump)
                           (local-set-key (kbd "<C-tab>") 'company-complete)
                           (local-set-key (kbd "C-c C-r") 'go-rename)
                           ;; Company mode rulz
-                          (auto-complete-mode 0)
-                          
+                          ;;(auto-complete-mode 0)
+
                           ))
 ;; Use goimports with is gofmt + automatic include adding/removing
 
@@ -123,7 +124,7 @@
 ;; Helm good
 (require 'prelude-helm-everywhere)
 
-(setq tab-width 4)
+(setq-default tab-width 4)
 
 (when window-system (set-frame-size (selected-frame) 160 48))
 
