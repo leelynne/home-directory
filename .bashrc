@@ -16,8 +16,31 @@ function prompt
 
 export PS1="\u@\h:\$(prompt)> "
 
-if [[ \$TMUX ]]; then source ~/.tmux/tmux-git/tmux-git.sh; fi
-
 source ~/.environment
 source ~/.aliases
+
+plat="$(uname -s)"
+case "${plat}" in
+    Linux*)
+        if [ -f ~/.environment.linux ]; then
+            source ~/.environment.linux
+        fi
+        if [ -f ~/.aliases.linux ]; then
+            source ~/.aliases.linux
+        fi
+        ;;
+    Darwin*)
+        if [ -f ~/.environment.darwin ]; then
+            source ~/.environment.darwin
+        fi
+        if [ -f ~/.aliases.darwin ]; then
+            source ~/.aliases.darwin
+        fi
+        ;;
+esac
+
+if [ -f ~/.tmux/tmux-git/tmux-git.sh ]; then
+    source ~/.tmux/tmux-git/tmux-git.sh; 
+fi
+
 source ~/.local_environment

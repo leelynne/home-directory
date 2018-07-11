@@ -30,60 +30,59 @@
 (add-hook 'go-mode-hook (lambda ()
                           ;;(setq gofmt-command "goimports")
                           ;;(add-hook 'before-save-hook 'gofmt-before-save)
+                          ;;(set (make-local-variable 'company-backends) '(company-go))
+                          ;;(setq gofmt-command "goimports") ;; Use goimports with is gofmt + automatic include adding/removing
+                          ;;(add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'godef-jump)
                           (local-set-key (kbd "<C-tab>") 'company-complete)
                           (local-set-key (kbd "C-c C-r") 'go-rename)
                           ;; Company mode rulz
                           ;;(auto-complete-mode 0)
-
                           ))
-;; Use goimports with is gofmt + automatic include adding/removing
-
-
 
 ;; Java
 ;; Eclim
-(custom-set-variables
- '(eclim-eclipse-dirs '("~/apps/eclipse"))
- '(eclim-executable "~/apps/eclipse/eclim")
- '(eclimd-default-workspace "~/eclipsews")
-)
+;; (custom-set-variables
+;;  '(eclim-eclipse-dirs '("~/eclipse/java-oxygen/Eclipse.app/Contents/Eclipse"))
+;;  '(eclim-executable "~/eclipse/java-oxygen/Eclipse.app/Contents/Eclipse/eclim")
+;;  '(eclimd-default-workspace "~/eclipsews")
+;; )
 
-(require 'eclim)
-(global-eclim-mode)
-(require 'eclimd)
+;; (require 'eclim)
+;; (global-eclim-mode)
+;; (require 'eclimd)
 
-(require 'company-emacs-eclim)
-(company-emacs-eclim-setup)
-(global-company-mode t)
+;; (require 'company-emacs-eclim)
+;; (company-emacs-eclim-setup)
+;; 
 
 
 
-(add-hook 'java-mode-hook (lambda ()
-                          (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
-                          (local-set-key (kbd "<C-tab>") 'company-complete)
-                          (local-set-key (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
-                          (local-set-key (kbd "C-.") 'eclim-problems-next)
-                          (local-set-key (kbd "C-h f") 'eclim-java-show-documentation-for-current-element)
-                          (local-set-key (kbd "C-c c") 'project-update-classpath)
-                          ;; eclim mode always on for java
-                          (eclim-mode t)
-                          ;; Company mode rulz
-                          (auto-complete-mode 0)
-                          ;; Show error message in echo buffer
-                          (setq help-at-pt-display-when-idle t)
-                          (setq help-at-pt-timer-delay 0.1)
-                          (help-at-pt-set-timer)
-                          ;; Spaces for tabs
-                          (setq-default indent-tabs-mode nil)
-                          ;; Start the daemon
-                          (start-eclimd "~/eclipsews")
-))
-(defun project-update-classpath ()
-  "Update classpath for current project."
-  (interactive)
-  (eclim--maven-execute "eclipse:eclipse -DdownloadJavadocs=true")
-  )
+;; (add-hook 'java-mode-hook (lambda ()
+;;                           (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
+;;                           (local-set-key (kbd "<C-tab>") 'company-complete)
+;;                           (local-set-key (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
+;;                           (local-set-key (kbd "C-.") 'eclim-problems-next)
+;;                           (local-set-key (kbd "C-h f") 'eclim-java-show-documentation-for-current-element)
+;;                           (local-set-key (kbd "C-c c") 'project-update-classpath)
+;;                           ;; eclim mode always on for java
+;;                           (eclim-mode t)
+;;                           ;; Company mode rulz
+;;                           (auto-complete-mode 0)
+;;                           ;; Show error message in echo buffer
+;;                           (setq help-at-pt-display-when-idle t)
+;;                           (setq help-at-pt-timer-delay 0.1)
+;;                           (help-at-pt-set-timer)
+;;                           ;; Spaces for tabs
+;;                           (setq-default indent-tabs-mode nil)
+;;                           ;; Start the daemon
+;;                           (start-eclimd "~/eclipsews")
+;; ))
+;; (defun project-update-classpath ()
+;;   "Update classpath for current project."
+;;   (interactive)
+;;   (eclim--maven-execute "eclipse:eclipse -DdownloadJavadocs=true")
+;;   )
 
 ;; JCS
 (require 'rjsx-mode)
@@ -94,7 +93,7 @@
 ;;(setq flycheck-phpcs-standard "~/styles/phprules.xml")
 ;;(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 ;;(add-hook 'php-mode-hook (lambda ()
-                           ;; stop whitespace being highlighted
+;; stop whitespace being highlighted
 ;;                           (setq indent-tabs-mode t)
 ;;                           (whitespace-toggle-options '(tabs))
 ;;                           (local-set-key [f5] 'my-php-debug)
@@ -115,6 +114,16 @@
 (require 'ensime)
 (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
+;; python
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook (lambda ()
+                              (local-set-key (kbd "<C-tab>") 'company-complete)
+                              ))
+
+;; org
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
+
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
 (global-flycheck-mode)
@@ -125,8 +134,8 @@
 (require 'prelude-helm-everywhere)
 
 (setq-default tab-width 4)
-
-(when window-system (set-frame-size (selected-frame) 160 48))
+(setq default-tab-width 4)
+(global-company-mode t)
 
 (setq whitespace-line-column 200)
 ;; Don't stop on first "error"

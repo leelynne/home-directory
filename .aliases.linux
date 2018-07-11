@@ -1,0 +1,2 @@
+alias ec='emacsclient -c -s $DISPLAY -a "" $*'
+alias ls='ls --color -la'
