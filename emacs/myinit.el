@@ -26,18 +26,25 @@
 ;; Mostly relying on prelude's go module now
 ;;(require 'go-mode)
 ;;(require 'company-go)
+(require 'lsp-mode)
+(require 'company-lsp)
+(push 'company-lsp company-backends)
+(setq lsp-enable-snippet nil)
 
+(require 'lsp-go)
+(add-hook 'go-mode-hook #'lsp)
 (add-hook 'go-mode-hook (lambda ()
-                          ;;(setq gofmt-command "goimports")
-                          ;;(add-hook 'before-save-hook 'gofmt-before-save)
-                          ;;(set (make-local-variable 'company-backends) '(company-go))
+                          (whitespace-toggle-options '(tabs))
+                          (subword-mode +1)
+                          (setq gofmt-command "goimports")
+                          (add-hook 'before-save-hook 'gofmt-before-save)
+                          ;;(add-hook 'before-save-hook #'lsp-format-buffer)
+                          ;;(add-hook 'before-save-hook #'lsp-organize-imports)
+                          (set (make-local-variable 'company-backends) '(company-go))
                           ;;(setq gofmt-command "goimports") ;; Use goimports with is gofmt + automatic include adding/removing
                           ;;(add-hook 'before-save-hook 'gofmt-before-save)
-                          (local-set-key (kbd "M-.") 'godef-jump)
-                          (local-set-key (kbd "<C-tab>") 'company-complete)
-                          (local-set-key (kbd "C-c C-r") 'go-rename)
-                          ;; Company mode rulz
-                          ;;(auto-complete-mode 0)
+                          (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
+                          (local-set-key (kbd "<C-tab>") 'company-lsp)
                           ))
 
 ;; Java
@@ -54,7 +61,7 @@
 
 ;; (require 'company-emacs-eclim)
 ;; (company-emacs-eclim-setup)
-;; 
+;;
 
 
 
@@ -127,11 +134,14 @@
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
 (global-flycheck-mode)
+(require 'lsp-ui-flycheck)
+(setq lsp-prefer-flymake nil)
 (define-key flycheck-mode-map (kbd "C-,") #'flycheck-previous-error)
 (define-key flycheck-mode-map (kbd "C-.") #'flycheck-next-error)
 
 ;; Helm good
 (require 'prelude-helm-everywhere)
+(require 'helm-lsp)
 
 (setq-default tab-width 4)
 (setq default-tab-width 4)
