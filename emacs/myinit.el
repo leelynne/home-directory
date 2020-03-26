@@ -3,7 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(ac-helm ac-inf-ruby company company-go company-emacs-eclim auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode ensime terraform-mode company-terraform))
+(prelude-require-packages '(ac-helm ac-inf-ruby company company-go auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode terraform-mode company-terraform helm-lsp lsp-java dap-mode treemacs treemacs-lsp treemacs-magit treemacs-projectile treemacs-icons-dired))
 
 ;; Auto-complete stuff
 (require 'auto-complete-config)
@@ -48,48 +48,20 @@
                           ))
 
 ;; Java
-;; Eclim
-;; (custom-set-variables
-;;  '(eclim-eclipse-dirs '("~/eclipse/java-oxygen/Eclipse.app/Contents/Eclipse"))
-;;  '(eclim-executable "~/eclipse/java-oxygen/Eclipse.app/Contents/Eclipse/eclim")
-;;  '(eclimd-default-workspace "~/eclipsews")
-;; )
-
-;; (require 'eclim)
-;; (global-eclim-mode)
-;; (require 'eclimd)
-
-;; (require 'company-emacs-eclim)
-;; (company-emacs-eclim-setup)
-;;
-
-
-
-;; (add-hook 'java-mode-hook (lambda ()
+(require 'lsp-java)
+(add-hook 'java-mode-hook #'lsp)
+(add-hook 'java-mode-hook (lambda ()
+                            ;; Spaces for tabs
+                            (setq-default indent-tabs-mode nil)
+                            ))
 ;;                           (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
 ;;                           (local-set-key (kbd "<C-tab>") 'company-complete)
 ;;                           (local-set-key (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
 ;;                           (local-set-key (kbd "C-.") 'eclim-problems-next)
 ;;                           (local-set-key (kbd "C-h f") 'eclim-java-show-documentation-for-current-element)
 ;;                           (local-set-key (kbd "C-c c") 'project-update-classpath)
-;;                           ;; eclim mode always on for java
-;;                           (eclim-mode t)
-;;                           ;; Company mode rulz
-;;                           (auto-complete-mode 0)
-;;                           ;; Show error message in echo buffer
-;;                           (setq help-at-pt-display-when-idle t)
-;;                           (setq help-at-pt-timer-delay 0.1)
-;;                           (help-at-pt-set-timer)
-;;                           ;; Spaces for tabs
-;;                           (setq-default indent-tabs-mode nil)
-;;                           ;; Start the daemon
-;;                           (start-eclimd "~/eclipsews")
-;; ))
-;; (defun project-update-classpath ()
-;;   "Update classpath for current project."
-;;   (interactive)
-;;   (eclim--maven-execute "eclipse:eclipse -DdownloadJavadocs=true")
-;;   )
+
+
 
 ;; JCS
 (require 'rjsx-mode)
@@ -118,8 +90,8 @@
   )
 
 ;; scala
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+;; (require 'ensime)
+;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 ;; python
 (add-hook 'python-mode-hook 'anaconda-mode)
