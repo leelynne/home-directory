@@ -22,5 +22,6 @@
                           ;;(add-hook 'before-save-hook 'gofmt-before-save)
                           (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
                           (local-set-key (kbd "<C-tab>") 'company-lsp)
+                          ))
 
 ;;; leef-go.el ends here
