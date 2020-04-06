@@ -3,7 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(ac-helm ac-inf-ruby company company-go company-emacs-eclim auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode ensime terraform-mode company-terraform))
+(prelude-require-packages '(ac-helm ac-inf-ruby company company-go auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode terraform-mode company-terraform helm-lsp lsp-java dap-mode treemacs treemacs-lsp treemacs-magit treemacs-projectile treemacs-icons-dired))
 
 ;; Auto-complete stuff
 (require 'auto-complete-config)
@@ -47,6 +47,14 @@
                           (local-set-key (kbd "<C-tab>") 'company-lsp)
                           ))
 
+;; Java
+(require 'lsp-java)
+(add-hook 'java-mode-hook #'lsp)
+(add-hook 'java-mode-hook (lambda ()
+                            ;; Spaces for tabs
+                            (setq-default indent-tabs-mode nil)
+                            ))
+
 ;; JCS
 (require 'rjsx-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
@@ -74,8 +82,8 @@
   )
 
 ;; scala
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+;; (require 'ensime)
+;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 ;; python
 (add-hook 'python-mode-hook 'anaconda-mode)
