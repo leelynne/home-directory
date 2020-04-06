@@ -47,50 +47,6 @@
                           (local-set-key (kbd "<C-tab>") 'company-lsp)
                           ))
 
-;; Java
-;; Eclim
-;; (custom-set-variables
-;;  '(eclim-eclipse-dirs '("~/eclipse/java-oxygen/Eclipse.app/Contents/Eclipse"))
-;;  '(eclim-executable "~/eclipse/java-oxygen/Eclipse.app/Contents/Eclipse/eclim")
-;;  '(eclimd-default-workspace "~/eclipsews")
-;; )
-
-;; (require 'eclim)
-;; (global-eclim-mode)
-;; (require 'eclimd)
-
-;; (require 'company-emacs-eclim)
-;; (company-emacs-eclim-setup)
-;;
-
-
-
-;; (add-hook 'java-mode-hook (lambda ()
-;;                           (local-set-key (kbd "M-.") 'eclim-java-find-declaration)
-;;                           (local-set-key (kbd "<C-tab>") 'company-complete)
-;;                           (local-set-key (kbd "C-c C-r") 'eclim-java-refactor-rename-symbol-at-point)
-;;                           (local-set-key (kbd "C-.") 'eclim-problems-next)
-;;                           (local-set-key (kbd "C-h f") 'eclim-java-show-documentation-for-current-element)
-;;                           (local-set-key (kbd "C-c c") 'project-update-classpath)
-;;                           ;; eclim mode always on for java
-;;                           (eclim-mode t)
-;;                           ;; Company mode rulz
-;;                           (auto-complete-mode 0)
-;;                           ;; Show error message in echo buffer
-;;                           (setq help-at-pt-display-when-idle t)
-;;                           (setq help-at-pt-timer-delay 0.1)
-;;                           (help-at-pt-set-timer)
-;;                           ;; Spaces for tabs
-;;                           (setq-default indent-tabs-mode nil)
-;;                           ;; Start the daemon
-;;                           (start-eclimd "~/eclipsews")
-;; ))
-;; (defun project-update-classpath ()
-;;   "Update classpath for current project."
-;;   (interactive)
-;;   (eclim--maven-execute "eclipse:eclipse -DdownloadJavadocs=true")
-;;   )
-
 ;; JCS
 (require 'rjsx-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
@@ -126,10 +82,6 @@
 (add-hook 'python-mode-hook (lambda ()
                               (local-set-key (kbd "<C-tab>") 'company-complete)
                               ))
-
-;; org
-(eval-after-load "org"
-  '(require 'ox-gfm nil t))
 
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
