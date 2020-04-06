@@ -3,7 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(ac-helm ac-inf-ruby company company-go auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode terraform-mode company-terraform helm-lsp lsp-java dap-mode treemacs treemacs-lsp treemacs-magit treemacs-projectile treemacs-icons-dired))
+(prelude-require-packages '(ac-helm ac-inf-ruby company company-go auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode terraform-mode company-terraform dap-mode))
 
 ;; Auto-complete stuff
 (require 'auto-complete-config)
@@ -26,10 +26,6 @@
 ;; Mostly relying on prelude's go module now
 ;;(require 'go-mode)
 ;;(require 'company-go)
-(require 'lsp-mode)
-(require 'company-lsp)
-(push 'company-lsp company-backends)
-(setq lsp-enable-snippet nil)
 
 (require 'lsp-go)
 (add-hook 'go-mode-hook #'lsp)
