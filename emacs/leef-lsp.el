@@ -5,7 +5,7 @@
 ;;; Code:
 
 ;; Additions to prelude-lsp module
-(prelude-require-packages '(lsp-java helm-lsp lsp-treemacs))
+(prelude-require-packages '(lsp-java helm-lsp lsp-treemacs dap-mode))
 
 (require 'prelude-lsp)
 (require 'lsp-mode)

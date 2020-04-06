@@ -4,8 +4,9 @@
 
 ;;; Code:
 
-(prelude-require-packages '(org-roam))
+(prelude-require-packages '(org-roam zotxt))
 
+(require 'prelude-org)
 (require 'org-roam)
 
 (custom-set-variables

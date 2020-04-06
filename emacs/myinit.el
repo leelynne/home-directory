@@ -3,7 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(ac-helm ac-inf-ruby company company-go auto-complete ecb go-autocomplete go-mode go-dlv go-guru go-projectile go-rename flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe  rjsx-mode terraform-mode company-terraform dap-mode))
+(prelude-require-packages '(ac-helm ac-inf-ruby company auto-complete ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode))
 
 ;; Auto-complete stuff
 (require 'auto-complete-config)
@@ -21,27 +21,6 @@
 (setq company-tooltip-limit 20)                      ; bigger popup window
 (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
 (setq company-echo-delay 0)
-
-;; Go
-;; Mostly relying on prelude's go module now
-;;(require 'go-mode)
-;;(require 'company-go)
-
-(require 'lsp-go)
-(add-hook 'go-mode-hook #'lsp)
-(add-hook 'go-mode-hook (lambda ()
-                          (whitespace-toggle-options '(tabs))
-                          (subword-mode +1)
-                          (setq gofmt-command "goimports")
-                          (add-hook 'before-save-hook 'gofmt-before-save)
-                          ;;(add-hook 'before-save-hook #'lsp-format-buffer)
-                          ;;(add-hook 'before-save-hook #'lsp-organize-imports)
-                          (set (make-local-variable 'company-backends) '(company-go))
-                          ;;(setq gofmt-command "goimports") ;; Use goimports with is gofmt + automatic include adding/removing
-                          ;;(add-hook 'before-save-hook 'gofmt-before-save)
-                          (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
-                          (local-set-key (kbd "<C-tab>") 'company-lsp)
-                          ))
 
 ;; Java
 (require 'lsp-java)
