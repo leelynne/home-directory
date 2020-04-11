@@ -89,7 +89,7 @@
 ;; Use visual-line-mode in gfm-mode
 (defun my-gfm-mode-hook ()
   "Use the 'marked' tool to display github flavored markdown."
-  (setq markdown-command "marked --gfm"))
+  (setq markdown-command "cmark-gfm"))
 (add-hook 'gfm-mode-hook 'my-gfm-mode-hook)
 
 ;;; myinit.el ends here

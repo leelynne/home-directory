@@ -15,3 +15,6 @@ emacsclient -a '' -c "$@"
 EOF
 
 chmod +x /usr/local/bin/ec
+
+# Binary used for markdown previews
+brew install cmark-gfm
