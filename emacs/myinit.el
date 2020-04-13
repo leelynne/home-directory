@@ -81,12 +81,12 @@
 (setq-default tab-width 4)
 (setq default-tab-width 4)
 (global-company-mode t)
+(global-visual-line-mode t)
 
 (setq whitespace-line-column 200)
 ;; Don't stop on first "error"
 (setq compilation-scroll-output 1)
 
-;; Use visual-line-mode in gfm-mode
 (defun my-gfm-mode-hook ()
   "Use the 'marked' tool to display github flavored markdown."
   (setq markdown-command "cmark-gfm"))
