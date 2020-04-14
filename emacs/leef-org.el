@@ -6,7 +6,7 @@
 
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
-(prelude-require-packages '(org-roam ox-gfm zotxt deft))
+(prelude-require-packages '(org-roam ox-gfm zotxt deft company-org-roam))
 
 (require 'prelude-org)
 (require 'org-roam)
