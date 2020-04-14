@@ -12,7 +12,7 @@
 (require 'prelude-emacs-lisp)
 ;; (require 'prelude-erc)
 ;; (require 'prelude-erlang)
-;;(require 'prelude-go)
+(require 'prelude-go)
 ;; (require 'prelude-haskell)
 (require 'prelude-js)
 ;; (require 'prelude-latex)
