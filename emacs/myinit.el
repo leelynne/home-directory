@@ -3,18 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(ac-helm ac-inf-ruby company auto-complete ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode))
-
-;; Auto-complete stuff
-(require 'auto-complete-config)
-(require 'ac-helm)
-(require 'ac-inf-ruby)
-
-(eval-after-load 'auto-complete
-  '(add-to-list 'ac-modes 'inf-ruby-mode))
-(add-hook 'inf-ruby-mode-hook 'ac-inf-ruby-enable)
-(ac-config-default)
-(ac-set-trigger-key "TAB")
+(prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode))
 
 ;; Generic company mode improvements
 (require 'company)
@@ -55,10 +44,6 @@
    (concat "XDEBUG_CONFIG='idekey=my-php-55' /usr/bin/php "
            (buffer-file-name) " &"))
   )
-
-;; scala
-;; (require 'ensime)
-;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
 ;; python
 (add-hook 'python-mode-hook 'anaconda-mode)

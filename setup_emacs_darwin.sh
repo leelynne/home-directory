@@ -18,3 +18,7 @@ chmod +x /usr/local/bin/ec
 
 # Binary used for markdown previews
 brew install cmark-gfm
+# Spell check
+brew install aspell
+# dot for org-roam
+brew install graphviz
