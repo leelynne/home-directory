@@ -6,7 +6,7 @@
 
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
-(prelude-require-packages '(org-roam ox-gfm zotxt deft company-org-roam org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex org-journal))
+(prelude-require-packages '(org-roam ox-gfm zotxt deft company-org-roam org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex org-journal ox-jira langtool))
 
 (require 'prelude-org)
 
@@ -55,9 +55,10 @@
 
 ;; org-journal
 (require 'org-journal)
-(setq org-journal-date-prefix "#+TITLE: "
+(setq org-journal-date-prefix "#+title: "
       org-journal-file-format "%Y-%m-%d.org"
       org-journal-time-format "%H%M"
+      org-journal-date-format "%Y-%m-%d"
       org-journal-dir "~/Dropbox/org/journal/"
       org-journal-carryover-items nil
       )
@@ -80,4 +81,7 @@
       org-roam-server-network-label-wrap-length 20
       )
 
+;; Grammar
+(setq langtool-language-tool-server-jar "~/apps/LanguageTool-5.0/languagetool-server.jar")
+(require 'langtool)
 ;;; leef-org.el ends here
