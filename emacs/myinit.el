@@ -62,7 +62,10 @@
 
 ;; plantuml
 (require 'plantuml-mode)
-(setq org-plantuml-jar-path (expand-file-name "~/apps/plantuml/plantuml.jar"))
+(setq plantuml-default-exec-mode 'executable)
+;; plantuml org
+;; org invokes the jar directly
+(setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
