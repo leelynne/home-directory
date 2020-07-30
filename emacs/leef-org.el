@@ -61,6 +61,7 @@
       org-journal-date-format "%Y-%m-%d"
       org-journal-dir "~/Dropbox/org/journal/"
       org-journal-carryover-items nil
+      org-journal-file-type 'daily
       )
 (defun org-journal-save-entry-and-exit()
   "Save buffer of the current day's entry and kill the window."

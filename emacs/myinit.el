@@ -3,7 +3,7 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode))
+(prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode restclient jq-mode plantuml-mode))
 
 ;; Generic company mode improvements
 (require 'company)
@@ -34,22 +34,19 @@
 ;;                           (local-set-key [f5] 'my-php-debug)
 ;;                           (php-eldoc-enable)
 ;;                           ))
-;; Debug a simple PHP script.
-;; Change the session key my-php-54 to any session key text you like
-(defun my-php-debug ()
-  "Run current PHP script for debugging with geben."
-  (interactive)
-  (call-interactively 'geben)
-  (shell-command
-   (concat "XDEBUG_CONFIG='idekey=my-php-55' /usr/bin/php "
-           (buffer-file-name) " &"))
-  )
 
 ;; python
 (add-hook 'python-mode-hook 'anaconda-mode)
 (add-hook 'python-mode-hook (lambda ()
                               (local-set-key (kbd "<C-tab>") 'company-complete)
                               ))
+
+;; restclient
+(require 'restclient)
+(require 'jq-mode)
+(require 'restclient-jq)
+(require 'restclient-helm)
+
 
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
@@ -62,6 +59,12 @@
 ;; Helm good
 (require 'prelude-helm-everywhere)
 (require 'helm-lsp)
+
+;; plantuml
+(require 'plantuml-mode)
+(setq org-plantuml-jar-path (expand-file-name "~/apps/plantuml/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
 (setq-default tab-width 4)
 (setq default-tab-width 4)
