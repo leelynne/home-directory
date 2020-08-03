@@ -12,8 +12,27 @@
 
 ;; org
 (setq org-directory "~/Dropbox/org/"
-      org-agenda-files '("~/Dropbox/org/journal")
-      )
+      org-agenda-files (list "~/Dropbox/org/journal"
+                             "~/Dropbox/docs"
+                              ))
+
+;; agenda
+(setq org-agenda-custom-commands
+      '(("f" "Month agenda"
+         ((agenda "" ((org-agenda-span 30))))
+         )
+        ("o" "OKRs"
+         ((agenda "" ((org-agenda-span 30)
+                      (org-agenda-tag-filter-preset '("+okr")))
+                      )
+           (tags "okr"))
+          )
+      ))
+
+(setq org-agenda-span 17
+      org-agenda-start-on-weekday nil
+      org-agenda-start-day "-3d")
+
 (add-hook 'org-mode-hook #'org-zotxt-mode)
 ;; Org export to markdown with support for github flavored markdown
 (eval-after-load "org"
