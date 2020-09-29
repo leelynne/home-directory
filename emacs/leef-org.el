@@ -12,7 +12,7 @@
 
 ;; org
 (setq org-directory "~/Dropbox/org/"
-      org-agenda-files (list "~/Dropbox/org/journal"
+      org-agenda-files (list "~/Dropbox/org/journal/recent"
                              "~/Dropbox/org/mobile"
                               ))
 
@@ -101,7 +101,7 @@
       org-journal-file-format "%Y-%m-%d.org"
       org-journal-time-format "%H%M"
       org-journal-date-format "%Y-%m-%d"
-      org-journal-dir "~/Dropbox/org/journal/"
+      org-journal-dir "~/Dropbox/org/journal/recent"
       org-journal-carryover-items nil
       org-journal-file-type 'daily
       )
