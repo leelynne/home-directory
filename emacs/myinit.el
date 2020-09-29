@@ -8,8 +8,9 @@
 ;; Generic company mode improvements
 (require 'company)
 (setq company-tooltip-limit 20)                      ; bigger popup window
-(setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
+(setq company-idle-delay .2)                         ; decrease delay before autocompletion popup shows
 (setq company-echo-delay 0)
+(setq company-minimum-prefix-length 1)
 
 ;; Java
 (require 'lsp-java)
@@ -41,12 +42,14 @@
                               (local-set-key (kbd "<C-tab>") 'company-complete)
                               ))
 
+;; terraform
+(add-hook 'terraform-mode-hook (lambda ()
+                                 (add-hook 'before-save-hook #'terraform-format-buffer)
+                                 ))
 ;; restclient
 (require 'restclient)
 (require 'jq-mode)
 (require 'restclient-jq)
-(require 'restclient-helm)
-
 
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)

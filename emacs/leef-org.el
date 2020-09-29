@@ -13,20 +13,27 @@
 ;; org
 (setq org-directory "~/Dropbox/org/"
       org-agenda-files (list "~/Dropbox/org/journal"
-                             "~/Dropbox/docs"
+                             "~/Dropbox/org/mobile"
                               ))
 
 ;; agenda
 (setq org-agenda-custom-commands
       '(("f" "Month agenda"
-         ((agenda "" ((org-agenda-span 30))))
+         ((agenda "" ((org-agenda-span 30)))
+          (todo ""))
          )
         ("o" "OKRs"
          ((agenda "" ((org-agenda-span 30)
                       (org-agenda-tag-filter-preset '("+okr")))
                       )
            (tags "okr"))
-          )
+         )
+        ("r" "RFC"
+         ((agenda "" ((org-agenda-span 30)
+                      (org-agenda-tag-filter-preset '("+rfc")))
+                  )
+          (tags "rfc"))
+         )
       ))
 
 (setq org-agenda-span 17
@@ -52,6 +59,20 @@
       ;; Don't sync the cache across machines
       org-roam-db-location "~/.cache/org-roam/org-roam.db"
       )
+(setq org-roam-capture-templates
+      '(("d" "default" plain #'org-roam-capture--get-point
+         "%?"
+         :file-name "%<%Y%m%d%H%M%S>-${slug}"
+         :head "#+title: ${title}\n"
+         :unnarrowed t)
+        ("i" "interview" plain #'org-roam-capture--get-point
+         "%?"
+         :file-name "interviews/${slug}"
+         :head "
+#+title: ${title}
+#+tags: interview\n"
+         :unnarrowed t))
+      )
 (push 'company-org-roam company-backends)
 (add-hook 'after-init-hook 'org-roam-mode)
 
@@ -73,7 +94,9 @@
       )
 
 ;; org-journal
+
 (require 'org-journal)
+(global-set-key (kbd "<f7>") 'org-journal-new-entry)
 (setq org-journal-date-prefix "#+title: "
       org-journal-file-format "%Y-%m-%d.org"
       org-journal-time-format "%H%M"
@@ -82,12 +105,12 @@
       org-journal-carryover-items nil
       org-journal-file-type 'daily
       )
-(defun org-journal-save-entry-and-exit()
-  "Save buffer of the current day's entry and kill the window."
-  (interactive)
-  (save-buffer)
-  (kill-buffer-and-window))
-(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
+;;(defun org-journal-save-entry-and-exit()
+;;  "Save buffer of the current day's entry and kill the window."
+;;  (interactive)
+;;  (save-buffer)
+;;  (kill-buffer-and-window))
+;;(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 
 ;; org-roam-server
 (setq org-roam-server-host "127.0.0.1"
