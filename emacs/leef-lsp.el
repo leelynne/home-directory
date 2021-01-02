@@ -15,8 +15,8 @@
 (require 'lsp-java)
 (add-hook 'java-mode-hook #'lsp)
 (add-hook 'java-mode-hook (lambda ()
-                            (add-hook 'before-save-hook #'lsp-format-buffer t t)
-                            (add-hook 'before-save-hook #'lsp-organize-imports t t)
+                            ;;(add-hook 'before-save-hook #'lsp-format-buffer t t)
+                            ;;(add-hook 'before-save-hook #'lsp-organize-imports t t)
                             (setq lsp-headerline-breadcrumb-enable t)
                             (setq lsp-ui-doc-delay 2) ;; slow down
                             (setq lsp-java-vmargs

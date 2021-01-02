@@ -6,7 +6,7 @@
 
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
-(prelude-require-packages '(org-roam ox-gfm zotxt deft company-org-roam org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex ox-jira langtool))
+(prelude-require-packages '(org-roam ox-gfm zotxt deft org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex ox-jira langtool))
 
 (require 'prelude-org)
 
@@ -34,6 +34,13 @@
                   )
           (tags "rfc"))
          )
+        ("w" "work"
+         ((agenda "" ((org-agenda-span 30)
+                      (org-agenda-tag-filter-preset '("+work")))
+                  )
+          (tags "work")
+          )
+         )
       ))
 
 (setq org-agenda-span 17
@@ -53,7 +60,7 @@
 
 ;; org-roam
 (require 'org-roam)
-(require 'company-org-roam)
+
 (setq org-roam-directory "~/Dropbox/org/notes"
       org-roam-completion-system 'helm
       ;; Don't sync the cache across machines
@@ -73,7 +80,7 @@
 #+tags: interview\n"
          :unnarrowed t))
       )
-(push 'company-org-roam company-backends)
+;;(push 'company-capf company-backends)
 (add-hook 'after-init-hook 'org-roam-mode)
 
 (add-hook 'org-roam-mode-hook (lambda()
