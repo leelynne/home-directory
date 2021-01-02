@@ -3,7 +3,11 @@
 ;;
 ;;; Code:
 
-(prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode restclient jq-mode plantuml-mode))
+(prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode restclient jq-mode plantuml-mode pdf-tools nov))
+
+;; Disable prelude UI stuff
+(menu-bar-mode -1)
+(global-nlinum-mode -1)
 
 ;; Generic company mode improvements
 (require 'company)
@@ -11,6 +15,7 @@
 (setq company-idle-delay .2)                         ; decrease delay before autocompletion popup shows
 (setq company-echo-delay 0)
 (setq company-minimum-prefix-length 1)
+(global-company-mode t)
 
 ;; Java
 (require 'lsp-java)
@@ -49,7 +54,7 @@
 ;; restclient
 (require 'restclient)
 (require 'jq-mode)
-(require 'restclient-jq)
+;;(require 'restclient-jq)
 
 ;; Steal flyspell bindings for flycheck
 (require 'flycheck)
@@ -74,8 +79,9 @@
 
 (setq-default tab-width 4)
 (setq default-tab-width 4)
-(global-company-mode t)
+
 (global-visual-line-mode t)
+
 
 (setq whitespace-line-column 200)
 ;; Don't stop on first "error"
@@ -86,4 +92,8 @@
   (setq markdown-command "cmark-gfm"))
 (add-hook 'gfm-mode-hook 'my-gfm-mode-hook)
 
+;; documents
+(require 'pdf-tools)
+(pdf-loader-install)
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 ;;; myinit.el ends here

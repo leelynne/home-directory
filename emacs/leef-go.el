@@ -27,6 +27,7 @@
                           (local-set-key (kbd "<C-tab>") 'company-capf)
                           (local-set-key (kbd "C-c C-f") 'helm-lsp-workspace-symbol)
                           (local-set-key (kbd "C-c C-d") 'lsp-ui-doc-show)
+                          (nlinum-mode t)
                           ))
 
 ;;; leef-go.el ends here

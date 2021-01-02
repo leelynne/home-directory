@@ -6,13 +6,13 @@
 
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
-(prelude-require-packages '(org-roam ox-gfm zotxt deft company-org-roam org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex org-journal ox-jira langtool))
+(prelude-require-packages '(org-roam ox-gfm zotxt deft company-org-roam org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex ox-jira langtool))
 
 (require 'prelude-org)
 
 ;; org
 (setq org-directory "~/Dropbox/org/"
-      org-agenda-files (list "~/Dropbox/org/journal/recent"
+      org-agenda-files (list "~/Dropbox/org/tasks"
                              "~/Dropbox/org/mobile"
                               ))
 
@@ -92,25 +92,6 @@
 (setq bibtex-completion-bibliography "~/Dropbox/zotero/bib/zotero.bib"
       bibtex-completion-pdf-field "file"
       )
-
-;; org-journal
-
-(require 'org-journal)
-(global-set-key (kbd "<f7>") 'org-journal-new-entry)
-(setq org-journal-date-prefix "#+title: "
-      org-journal-file-format "%Y-%m-%d.org"
-      org-journal-time-format "%H%M"
-      org-journal-date-format "%Y-%m-%d"
-      org-journal-dir "~/Dropbox/org/journal/recent"
-      org-journal-carryover-items nil
-      org-journal-file-type 'daily
-      )
-;;(defun org-journal-save-entry-and-exit()
-;;  "Save buffer of the current day's entry and kill the window."
-;;  (interactive)
-;;  (save-buffer)
-;;  (kill-buffer-and-window))
-;;(define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
 
 ;; org-roam-server
 (setq org-roam-server-host "127.0.0.1"
