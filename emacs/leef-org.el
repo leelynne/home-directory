@@ -6,7 +6,7 @@
 
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
-(prelude-require-packages '(org-roam ox-gfm zotxt deft org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex ox-jira langtool))
+(prelude-require-packages '(org-roam ox-gfm zotxt deft org-roam-bibtex org-roam-server org-noter org-ref helm-bibtex ox-jira langtool org-chef))
 
 (require 'prelude-org)
 
@@ -57,6 +57,7 @@
 (setq deft-recursive t
       deft-directory "~/Dropbox/org"
       )
+(setq deft-extensions '("org" "md" "txt"))
 
 ;; org-roam
 (require 'org-roam)
@@ -77,14 +78,13 @@
          :file-name "interviews/${slug}"
          :head "
 #+title: ${title}
-#+tags: interview\n"
+#+roam_tags: interview\n"
          :unnarrowed t))
       )
-;;(push 'company-capf company-backends)
-(add-hook 'after-init-hook 'org-roam-mode)
 
-(add-hook 'org-roam-mode-hook (lambda()
-                                (local-set-key (kbd "<C-tab>") 'company-complete)
+(add-hook 'after-init-hook 'org-roam-mode)
+(add-hook 'org-mode-hook (lambda()
+                                (local-set-key (kbd "<C-tab>") 'completion-at-point)
                                 ))
 
 ;; org-ref
@@ -116,3 +116,6 @@
 (setq langtool-language-tool-server-jar "~/apps/LanguageTool-5.0/languagetool-server.jar")
 (require 'langtool)
 ;;; leef-org.el ends here
+
+;; org-chef
+(setq org-chef-prefer-json-ld t)
