@@ -3,6 +3,8 @@
 ;;
 ;;; Code:
 
+(setq org-roam-v2-ack t)
+
 (prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode restclient jq-mode plantuml-mode pdf-tools nov avy))
 
 ;; Disable prelude UI stuff
@@ -15,7 +17,7 @@
 (setq company-idle-delay .2)                         ; decrease delay before autocompletion popup shows
 (setq company-echo-delay 0)
 (setq company-minimum-prefix-length 1)
-(push 'company-capf company-backends)
+(add-to-list 'company-backends 'company-capf)
 (global-company-mode t)
 
 ;; JCS
@@ -86,6 +88,8 @@
   "Use the 'marked' tool to display github flavored markdown."
   (setq markdown-command "cmark-gfm"))
 (add-hook 'gfm-mode-hook 'my-gfm-mode-hook)
+
+
 
 ;; documents
 (require 'pdf-tools)

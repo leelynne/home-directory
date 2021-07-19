@@ -14,7 +14,13 @@
 (setq org-directory "~/Dropbox/org/"
       org-agenda-files (list "~/Dropbox/org/tasks"
                              "~/Dropbox/org/mobile"
-                              ))
+                             ))
+
+;; Update org files timestamps
+(require 'time-stamp)
+(add-hook 'write-file-functions 'time-stamp) ; update when saving
+(setq time-stamp-pattern "%:y-%02m-%02d %02H:%02M:%02S")
+(setq time-stamp-start "updated:[ 	]+\\\\?[\"<]+")
 
 ;; agenda
 (setq org-agenda-custom-commands
@@ -25,8 +31,8 @@
         ("o" "OKRs"
          ((agenda "" ((org-agenda-span 30)
                       (org-agenda-tag-filter-preset '("+okr")))
-                      )
-           (tags "okr"))
+                  )
+          (tags "okr"))
          )
         ("r" "RFC"
          ((agenda "" ((org-agenda-span 30)
@@ -41,7 +47,7 @@
           (tags "work")
           )
          )
-      ))
+        ))
 
 (setq org-agenda-span 17
       org-agenda-start-on-weekday nil
@@ -84,8 +90,8 @@
 
 (add-hook 'after-init-hook 'org-roam-mode)
 (add-hook 'org-mode-hook (lambda()
-                                (local-set-key (kbd "<C-tab>") 'completion-at-point)
-                                ))
+                           (local-set-key (kbd "<C-tab>") 'completion-at-point)
+                           ))
 
 ;; org-ref
 (require 'org-ref)
@@ -112,10 +118,30 @@
       org-roam-server-network-label-wrap-length 20
       )
 
-;; Grammar
-(setq langtool-language-tool-server-jar "~/apps/LanguageTool-5.0/languagetool-server.jar")
-(require 'langtool)
-;;; leef-org.el ends here
+(defun org-hide-properties ()
+  "Hide all org-mode headline property drawers in buffer. Could be slow if it has a lot of overlays."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward
+            "^ *:properties:\n\\( *:.+?:.*\n\\)+ *:end:\n" nil t)
+      (let ((ov_this (make-overlay (match-beginning 0) (match-end 0))))
+        (overlay-put ov_this 'display "")
+        (overlay-put ov_this 'hidden-prop-drawer t))))
+  (put 'org-toggle-properties-hide-state 'state 'hidden))
+
+(defun org-show-properties ()
+  "Show all org-mode property drawers hidden by org-hide-properties."
+  (interactive)
+  (remove-overlays (point-min) (point-max) 'hidden-prop-drawer t)
+  (put 'org-toggle-properties-hide-state 'state 'shown))
+
+(defun org-toggle-properties ()
+  "Toggle visibility of property drawers."
+  (interactive)
+  (if (eq (get 'org-toggle-properties-hide-state 'state) 'hidden)
+      (org-show-properties)
+    (org-hide-properties)))
 
 ;; org-chef
 (setq org-chef-prefer-json-ld t)
