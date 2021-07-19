@@ -22,6 +22,14 @@
 (setq time-stamp-pattern "%:y-%02m-%02d %02H:%02M:%02S")
 (setq time-stamp-start "updated:[ 	]+\\\\?[\"<]+")
 
+
+;;                             )
+;;      org-adapt-indentation nil)
+;;(add-to-list 'org-structure-template-alist
+             ;;(list "p" (concat ":PROPERTIES:\n"
+               ;;                "?\n"
+                 ;;              ":END:")))
+
 ;; agenda
 (setq org-agenda-custom-commands
       '(("f" "Month agenda"

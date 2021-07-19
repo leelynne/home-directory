@@ -10,6 +10,7 @@
 (require 'prelude-lsp)
 (require 'lsp-mode)
 (setq lsp-enable-snippet nil)
+(setq lsp-ui-sideline-actions-icon nil)
 
 ;; java
 (require 'lsp-java)
@@ -19,6 +20,7 @@
                             ;;(add-hook 'before-save-hook #'lsp-organize-imports t t)
                             (setq lsp-headerline-breadcrumb-enable t)
                             (setq lsp-ui-doc-delay 2) ;; slow down
+                            ;; icons are freaking huge
                             (setq lsp-java-vmargs
                                   `("-Xmx2G"
                                     "-XX:+UseG1GC"
