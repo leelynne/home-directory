@@ -7,6 +7,8 @@
 
 (prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode restclient jq-mode plantuml-mode pdf-tools nov avy))
 
+(require 'magit)
+
 ;; Disable prelude UI stuff
 (menu-bar-mode -1)
 (global-nlinum-mode -1)

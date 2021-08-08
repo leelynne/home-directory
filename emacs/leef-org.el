@@ -81,20 +81,21 @@
       ;; Don't sync the cache across machines
       org-roam-db-location "~/.cache/org-roam/org-roam.db"
       )
-(setq org-roam-capture-templates
-      '(("d" "default" plain #'org-roam-capture--get-point
-         "%?"
-         :file-name "%<%Y%m%d%H%M%S>-${slug}"
-         :head "#+title: ${title}\n"
-         :unnarrowed t)
-        ("i" "interview" plain #'org-roam-capture--get-point
-         "%?"
-         :file-name "interviews/${slug}"
-         :head "
-#+title: ${title}
-#+roam_tags: interview\n"
-         :unnarrowed t))
-      )
+
+;; (setq org-roam-capture-templates
+;;       '(("d" "default" plain #'org-roam-capture--get-point
+;;          "%?"
+;;          :file-name "%<%Y%m%d%H%M%S>-${slug}"
+;;          :head "#+title: ${title}\n"
+;;          :unnarrowed t)
+;;         ("i" "interview" plain #'org-roam-capture--get-point
+;;          "%?"
+;;          :file-name "interviews/${slug}"
+;;          :head "
+;; #+title: ${title}
+;; #+roam_tags: interview\n"
+;;          :unnarrowed t))
+;;       )
 
 (add-hook 'after-init-hook 'org-roam-mode)
 (add-hook 'org-mode-hook (lambda()
