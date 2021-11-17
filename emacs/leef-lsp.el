@@ -9,6 +9,7 @@
 
 (require 'prelude-lsp)
 (require 'lsp-mode)
+(require 'dap-mode)
 (setq lsp-enable-snippet nil)
 (setq lsp-ui-sideline-actions-icon nil)
 
@@ -26,9 +27,8 @@
                                     "-XX:+UseG1GC"
                                     "-XX:+UseStringDeduplication"
                                     "-javaagent:/Users/lee/.m2/repository/org/projectlombok/lombok/1.18.10/lombok-1.18.10.jar"))
-                            (setq lsp-java-format-settings-url "/Users/lee/repos/rfcPayouts/gradle/spotless.eclipse-java-google-style.xml")
+                            (setq lsp-java-format-settings-url "~/home-directory/spotless.eclipse-java-google-style.xml")
                             (setq lsp-java-format-settings-profile "GoogleStyle")
-                            (setq c-basic-offset 2)
                             ;; CamelCase aware editing operations
                             (subword-mode +1)
                             (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
