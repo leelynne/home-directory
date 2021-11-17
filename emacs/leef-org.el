@@ -97,7 +97,7 @@
 ;;          :unnarrowed t))
 ;;       )
 
-(add-hook 'after-init-hook 'org-roam-mode)
+(add-hook 'after-init-hook 'org-roam-setup)
 (add-hook 'org-mode-hook (lambda()
                            (local-set-key (kbd "<C-tab>") 'completion-at-point)
                            ))

@@ -7,6 +7,11 @@
 
 (prelude-require-packages '(company ecb flymake-ruby flymake-cursor puppet-mode mustache-mode enh-ruby-mode robe rjsx-mode terraform-mode company-terraform protobuf-mode restclient jq-mode plantuml-mode pdf-tools nov avy))
 
+;; Fix connecting to elpa
+(when (and (equal emacs-version "27.2")
+           (eql system-type 'darwin))
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
 (require 'magit)
 
 ;; Disable prelude UI stuff
