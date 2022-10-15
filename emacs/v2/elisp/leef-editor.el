@@ -13,19 +13,65 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
+(defvar savefile-dir (expand-file-name "savefile" user-emacs-directory)
+  "For automatically generated save/history-files.")
+
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
 
+;; smart tab behavior - indent or complete
+(setq tab-always-indent 'complete)
+
+;; nice scrolling
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
 
 (which-key-mode +1)
+
+(use-package flyspell
+  :config
+  (setq ispell-program-name "aspell" ; use aspell instead of ispell
+		ispell-extra-args '("--sug-mode=ultra"))
+  (flyspell-mode +1)
+  )
+
+(use-package projectile
+  :config
+  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
+  (projectile-mode t))
+;; saveplace remembers your location in a file when saving files
+(setq save-place-file (expand-file-name "saveplace" savefile-dir))
+;; activate it for all buffers
+(save-place-mode 1)
+
+;; anzu-mode enhances isearch & query-replace by showing total matches and current match position
+(use-package anzu
+  :diminish anzu-mode
+  :bind (("M-%" . anzu-query-replace)
+		 ("C-M-%" . anzu-query-replace-regexp))
+  :config 
+  (global-anzu-mode))
+
+;; savehist keeps track of some history
+(require 'savehist)
+(setq savehist-additional-variables
+      ;; search entries
+      '(search-ring regexp-search-ring)
+      ;; save every minute
+      savehist-autosave-interval 60
+      ;; keep the home clean
+      savehist-file (expand-file-name "savehist" savefile-dir))
+(savehist-mode +1)
+
 ;; recent files
 (require 'recentf)
-;;(setq recentf-save-file (expand-file-name "recentf" prelude-savefile-dir)
-;;      recentf-max-saved-items 500
-;;      recentf-max-menu-items 15
+(setq recentf-save-file (expand-file-name "recentf" savefile-dir)
+      recentf-max-saved-items 500
+      recentf-max-menu-items 15
       ;; disable recentf-cleanup on Emacs start, because it can cause
       ;; problems with remote files
-;;      recentf-auto-cleanup 'never)
+      recentf-auto-cleanup 'never)
 
 ;; undo
 (use-package undo-tree
@@ -37,6 +83,13 @@
   (setq undo-tree-auto-save-history t)
   (global-undo-tree-mode)
   )
+
+;; automatically save buffers associated with files on buffer switch
+;; and on windows switch
+(use-package super-save
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1))
 
 ;; Suppot .editorconfig file when present
 (use-package editorconfig

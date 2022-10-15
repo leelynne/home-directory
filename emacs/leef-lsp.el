@@ -5,14 +5,34 @@
 ;;; Code:
 
 ;; Additions to prelude-lsp module
-(prelude-require-packages '(lsp-java helm-lsp lsp-treemacs dap-mode))
+(prelude-require-packages '(lsp-mode lsp-ui lsp-java helm-lsp lsp-treemacs dap-mode))
 
-(require 'prelude-lsp)
+(require 'lsp-ui)
+(require 'lsp-ui-imenu)
 (require 'lsp-mode)
 (require 'dap-mode)
+
+;; lsp-ui bindings and settings
+(define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+(define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+(define-key lsp-ui-mode-map (kbd "C-c C-l .") 'lsp-ui-peek-find-definitions)
+(define-key lsp-ui-mode-map (kbd "C-c C-l ?") 'lsp-ui-peek-find-references)
+(define-key lsp-ui-mode-map (kbd "C-c C-l r") 'lsp-rename)
+(define-key lsp-ui-mode-map (kbd "C-c C-l x") 'lsp-workspace-restart)
+(define-key lsp-ui-mode-map (kbd "C-c C-l w") 'lsp-ui-peek-find-workspace-symbol)
+(define-key lsp-ui-mode-map (kbd "C-c C-l i") 'lsp-ui-peek-find-implementation)
+(define-key lsp-ui-mode-map (kbd "C-c C-l d") 'lsp-describe-thing-at-point)
+(define-key lsp-ui-mode-map (kbd "C-c C-l e") 'lsp-execute-code-action)
+
+(setq lsp-ui-sideline-enable t)
+(setq lsp-ui-doc-enable t)
+(setq lsp-ui-peek-enable t)
+(setq lsp-ui-peek-always-show t)
+
 (setq lsp-enable-snippet nil)
 (setq lsp-ui-sideline-actions-icon nil)
 
+(setq lsp-treemacs-sync-mode 1)
 ;; java
 (require 'lsp-java)
 (add-hook 'java-mode-hook #'lsp)

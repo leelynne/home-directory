@@ -99,7 +99,7 @@
 
 
 ;; documents
-(require 'pdf-tools)
-(pdf-loader-install)
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+;;(require 'pdf-tools)
+;;(pdf-loader-install)
+;;(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 ;;; myinit.el ends here

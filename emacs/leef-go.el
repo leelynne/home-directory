@@ -7,8 +7,8 @@
 ;; Additions to prelude-go module
 (prelude-require-packages '(go-dlv go-rename))
 
-;;(require 'prelude-go)
 (require 'lsp-go)
+(require 'dap-dlv-go)
 (add-hook 'go-mode-hook #'lsp)
 (add-hook 'go-mode-hook (lambda ()
                           (add-hook 'before-save-hook #'lsp-format-buffer t t)

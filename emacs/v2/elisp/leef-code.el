@@ -4,6 +4,15 @@
 
 ;;; Code:
 
+;; generic
+(use-package flycheck
+  :bind (("C-." . flycheck-next-error)
+		 ("C-," . flycheck-previous-error)))
+
+(use-package hl-todo
+  :config
+  (global-hl-todo-mode 1))
+
 ;; java
 (require 'lsp-java)
 (add-hook 'java-mode-hook #'lsp)

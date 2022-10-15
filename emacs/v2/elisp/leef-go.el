@@ -7,6 +7,7 @@
 (use-package go-mode)
 (use-package go-dlv)
 (use-package go-rename)
+(use-package go-projectile)
 
 (require 'lsp-go)
 (require 'dap-dlv-go)

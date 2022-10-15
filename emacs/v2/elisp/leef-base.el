@@ -20,8 +20,6 @@
 ;; Generic stuff
 (use-package which-key)
 (use-package magit)
-(use-package flycheck)
-(use-package projectile)
 (use-package diminish)
 
 ;; Helm

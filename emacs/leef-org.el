@@ -26,9 +26,9 @@
 ;;                             )
 ;;      org-adapt-indentation nil)
 ;;(add-to-list 'org-structure-template-alist
-             ;;(list "p" (concat ":PROPERTIES:\n"
-               ;;                "?\n"
-                 ;;              ":END:")))
+;;(list "p" (concat ":PROPERTIES:\n"
+;;                "?\n"
+;;              ":END:")))
 
 ;; agenda
 (setq org-agenda-custom-commands
@@ -68,16 +68,31 @@
   )
 
 ;; Deft
+(defun cm/deft-parse-title (file contents)
+  "Parse the given FILE and CONTENTS and determine the title.
+  If `deft-use-filename-as-title' is nil, the title is taken to
+  be the first non-empty line of the FILE.  Else the base name of the FILE is
+  used as title."
+  (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
+	(if begin
+	    (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
+	  (deft-base-filename file))))
+
+(advice-add 'deft-parse-title :override #'cm/deft-parse-title)
 (setq deft-recursive t
       deft-directory "~/Dropbox/org"
-      )
+      deft-strip-summary-regexp	  (concat "\\("
+		                                  "[\n\t]" ;; blank
+		                                  "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
+		                                  "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
+		                                  "\\)"))
 (setq deft-extensions '("org" "md" "txt"))
 
 ;; org-roam
 (require 'org-roam)
 
 (setq org-roam-directory "~/Dropbox/org/notes"
-      org-roam-completion-system 'helm
+      ;;org-roam-completion-system 'helm
       ;; Don't sync the cache across machines
       org-roam-db-location "~/.cache/org-roam/org-roam.db"
       )
@@ -96,6 +111,13 @@
 ;; #+roam_tags: interview\n"
 ;;          :unnarrowed t))
 ;;       )
+
+(add-to-list 'display-buffer-alist
+             '("\\*org-roam\\*"
+               (display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.33)
+               (window-height . fit-window-to-buffer)))
 
 (add-hook 'after-init-hook 'org-roam-setup)
 (add-hook 'org-mode-hook (lambda()
