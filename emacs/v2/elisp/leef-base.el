@@ -18,6 +18,7 @@
 (setq whitespace-style '(face tabs empty trailing))
 
 ;; Generic stuff
+;; Show available key bindings in a pop up
 (use-package which-key)
 (use-package magit)
 (use-package diminish)
@@ -28,7 +29,7 @@
 (use-package helm-descbinds)
 (use-package helm-ag)
 
-(require 'helm-config)
+;;(require 'helm-config)
 (require 'helm-projectile)
 (require 'helm-eshell)
 
@@ -73,13 +74,14 @@
 
 ;; Completion
 (use-package company
-  :init
+  :bind (:map company-active-map
+			  ("C-n" . company-select-next)
+			  ("C-p" . company-select-previous))
+  :config
   (setq company-tooltip-limit 20)                      ; bigger popup window
   (setq company-idle-delay .2)                         ; decrease delay before autocompletion popup shows
   (setq company-echo-delay 0)
   (setq company-minimum-prefix-length 1)
-  :config
-  (add-to-list 'company-backends 'company-capf)
   (global-company-mode t))
 
 

@@ -6,6 +6,7 @@
 
 (setq-default tab-width 4)
 (setq default-tab-width 4)
+(visual-line-mode t)
 
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist
@@ -32,9 +33,7 @@
 (use-package flyspell
   :config
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
-		ispell-extra-args '("--sug-mode=ultra"))
-  (flyspell-mode +1)
-  )
+		ispell-extra-args '("--sug-mode=ultra")))
 
 (use-package projectile
   :config

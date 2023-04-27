@@ -23,12 +23,7 @@
                           (setq lsp-ui-doc-delay 2) ;; slow down
                           (setq lsp-headerline-breadcrumb-enable t)
                           (setq lsp-headerline-breadcrumb-segments '(path-up-to-project symbols))
-                          ;; keys
-                          (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
-                          (local-set-key (kbd "M-/") 'lsp-ui-peek-find-references)
                           (local-set-key (kbd "<C-tab>") 'company-capf)
-                          (local-set-key (kbd "C-c C-f") 'helm-lsp-workspace-symbol)
-                          (local-set-key (kbd "C-c C-d") 'lsp-ui-doc-show)
 ;;                          (nlinum-mode t)
                           ))
 

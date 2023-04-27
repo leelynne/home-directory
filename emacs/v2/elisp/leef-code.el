@@ -6,14 +6,44 @@
 
 ;; generic
 (use-package flycheck
-  :bind (("C-." . flycheck-next-error)
+  :bind* (("C-." . flycheck-next-error)
 		 ("C-," . flycheck-previous-error)))
 
+;; Spell check comments
+(add-hook 'prog-mode-hook (lambda ()
+							(flyspell-prog-mode)
+							))
 (use-package hl-todo
   :config
   (global-hl-todo-mode 1))
 
+;; yaml
+(use-package yaml-mode
+  :hook ((yaml-mode . whitespace-mode)
+         (yaml-mode . subword-mode)))
+
+;; bash
+(add-hook 'sh-mode-hook (lambda ()
+						  (lsp)))
+(require 'lsp-bash)
+
+
+;; scala
+(use-package scala-mode
+  :config
+  (add-hook 'scala-mode-hook (lambda ()
+							   (subword-mode +1))))
+;; Metals is a scala LSP
+(use-package lsp-metals
+  :custom
+  ;; Metals claims to support range formatting by default but it supports range
+  ;; formatting of multiline strings only. You might want to disable it so that
+  ;; emacs can use indentation provided by scala-mode.
+  (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"))
+  :hook (scala-mode . lsp))
+
 ;; java
+(use-package lsp-java)
 (require 'lsp-java)
 (add-hook 'java-mode-hook #'lsp)
 (add-hook 'java-mode-hook (lambda ()
@@ -37,6 +67,9 @@
                             (local-set-key (kbd "C-c C-f") 'helm-lsp-workspace-symbol)
                             (local-set-key (kbd "C-c C-d") 'lsp-ui-doc-show)
                           ))
+
+;; kotlin
+(use-package kotlin-mode)
 
 (provide 'leef-code)
 ;;; leef-code.el ends here

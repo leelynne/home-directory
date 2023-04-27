@@ -11,7 +11,7 @@
 (use-package deft)
 (use-package org-roam-bibtex)
 (use-package org-roam-ui)
-(use-package org-noter)
+;;(use-package org-noter)
 (use-package org-ref)
 (use-package org-chef)
 (use-package helm-bibtex)
@@ -28,6 +28,19 @@
       org-agenda-files (list "~/Dropbox/org/tasks"
                              "~/Dropbox/org/mobile"
                              ))
+;; org-babel
+(use-package ob-async) ;; async code block execution
+(use-package ob-deno) ;; javascript
+(use-package ob-tmux) ;; shell
+(use-package ob-dart) ;;
+(use-package ob-go)
+(use-package ob-kotlin)
+(use-package ob-rust)
+(use-package ob-http)
+(use-package ob-mermaid)
+(use-package ob-php)
+(use-package ob-sql-mode)
+(use-package ob-typescript) 
 
 ;; Update org files timestamps
 (require 'time-stamp)
@@ -75,6 +88,7 @@ p         )
       org-agenda-start-day "-3d")
 
 (add-hook 'org-mode-hook #'org-zotxt-mode)
+(add-hook 'org-mode-hook #'flyspell-mode)
 ;; Org export to markdown with support for github flavored markdown
 (eval-after-load "org"
   '(require 'ox-gfm nil t)
