@@ -17,6 +17,9 @@
 (require 'whitespace)
 (setq whitespace-style '(face tabs empty trailing))
 
+;; Default to visual line mode
+(global-visual-line-mode)
+
 ;; Generic stuff
 ;; Show available key bindings in a pop up
 (use-package which-key)

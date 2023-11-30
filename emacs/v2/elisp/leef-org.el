@@ -12,6 +12,11 @@
 (use-package org-roam-bibtex)
 (use-package org-roam-ui)
 ;;(use-package org-noter)
+(use-package org-roam-timestamps
+  :after org-roam
+  ;; set creation and modification timestamps
+  :config (org-roam-timestamps-mode))
+
 (use-package org-ref)
 (use-package org-chef)
 (use-package helm-bibtex)
@@ -150,6 +155,7 @@ p         )
 (add-hook 'org-mode-hook (lambda()
                            (local-set-key (kbd "<C-tab>") 'completion-at-point)
                            ))
+
 
 ;; org-ref
 (require 'org-ref)
