@@ -30,8 +30,8 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
 (setq org-directory "~/Dropbox/org/"
-      org-agenda-files (list "~/Dropbox/org/tasks"
-                             "~/Dropbox/org/mobile"
+	  org-image-actual-width nil
+      org-agenda-files (list "~/Dropbox/org/notes/mobile"
                              ))
 ;; org-babel
 (use-package ob-async) ;; async code block execution
