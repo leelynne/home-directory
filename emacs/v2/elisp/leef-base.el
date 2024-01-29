@@ -25,16 +25,17 @@
 (use-package which-key)
 (use-package magit)
 (use-package diminish)
+(use-package s) ;; string manipulation
 
 ;; Helm
 (use-package helm)
 (use-package helm-projectile)
 (use-package helm-descbinds)
 (use-package helm-ag)
-
 ;;(require 'helm-config)
 (require 'helm-projectile)
 (require 'helm-eshell)
+
 
 (setq helm-split-window-in-side-p           t
       helm-buffers-fuzzy-matching           t
