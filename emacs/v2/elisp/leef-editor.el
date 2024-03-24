@@ -28,8 +28,6 @@
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
-(which-key-mode +1)
-
 (use-package flyspell
   :config
   (setq ispell-program-name "aspell" ; use aspell instead of ispell

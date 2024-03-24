@@ -23,6 +23,7 @@
 ;; Generic stuff
 ;; Show available key bindings in a pop up
 (use-package which-key)
+(which-key-mode +1)
 (use-package magit)
 (use-package diminish)
 (use-package s) ;; string manipulation

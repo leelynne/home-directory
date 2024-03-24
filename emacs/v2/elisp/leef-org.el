@@ -37,6 +37,7 @@
 (require 'org)
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(setq org-startup-with-inline-images t)
 
 (setq org-directory "~/Dropbox/org/"
 	  org-image-actual-width nil
@@ -55,6 +56,8 @@
 (use-package ob-php)
 (use-package ob-sql-mode)
 (use-package ob-typescript) 
+
+(setq ob-mermaid-cli-path "~/.config/node/bin/mmdc")
 
 ;; Update org files timestamps
 (require 'time-stamp)
@@ -94,7 +97,7 @@
                   )
           (tags "work")
           )
-p         )
+         )
         ))
 
 (setq org-agenda-span 17
