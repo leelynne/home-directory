@@ -2,3 +2,7 @@
 [url "ssh://git@github.com/"]
      insteadOf = https://github.com/
 [push]
+[user]
+	name = Lee
+[core]
+	editor = emacsclient

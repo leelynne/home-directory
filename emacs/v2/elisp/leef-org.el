@@ -7,6 +7,28 @@
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
 (use-package org-roam)
+
+;; (setq org-roam-node-display-template "${title:*}")
+(setq org-roam-node-display-template
+    (concat "${title:*} "
+        (propertize "${tags:25}" 'face 'org-tag)))
+
+;; This flips widow-width and frame-width usage for the completion mini-buffer.  This seems to be a helm specific issue.
+;; https://github.com/org-roam/org-roam/issues/1578#issuecomment-890486453
+(defun org-roam-node--to-candidate (node)
+      "Return a minibuffer completion candidate given NODE."
+      (let ((candidate-main (org-roam-node--format-entry
+                             node
+                             (if (bufferp (current-buffer))
+                                 (window-width) (-1 frame-width)))))
+        (cons (propertize candidate-main 'node node) node)))
+
+;; Adds tags to the identity of the node. This is different than just adding tags to the display
+;;(defun org-roam-node-read--annotation (node)
+;;  (mapconcat #'identity
+;;             (org-roam-node-tags node)
+;;             "\s"))
+
 (use-package zotxt)
 (use-package deft)
 (use-package org-roam-bibtex)
@@ -24,7 +46,13 @@
 (use-package helm-bibtex)
 (use-package ox-jira)
 (use-package ox-gfm)
-(use-package langtool)
+
+(use-package langtool
+  :config
+  (setq langtool-language-tool-server-jar "~/.emacs.d/languagetool-server.jar")
+  (setq langtool-server-user-arguments '("--config" 'expand-file-name "~/.emacs.d/languagetool.properties"))
+  )
+
 ;; project management helpers
 (use-package vulpea
   :ensure t

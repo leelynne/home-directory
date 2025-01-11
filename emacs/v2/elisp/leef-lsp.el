@@ -44,5 +44,11 @@
 
 (setq lsp-treemacs-sync-mode 1)
 
+;; templ
+(add-to-list 'lsp-language-id-configuration '(".*\\.templ$" . "templ"))
+(lsp-register-client (make-lsp-client
+                      :new-connection (lsp-stdio-connection '("templ" "lsp" "-goplsRPCTrace"))
+                      :activation-fn (lsp-activate-on "templ")
+                      :server-id 'templ))
 (provide 'leef-lsp)
 ;;; leef-lsp.el ends here

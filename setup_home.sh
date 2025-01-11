@@ -1,6 +1,7 @@
 #/bin/bash
 
-mkdir $HOME/.history.d
+mkdir -p $HOME/.history.d
+mkdir -p $HOME/tools
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 

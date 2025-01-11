@@ -16,6 +16,8 @@ EOF
 
 chmod +x /usr/local/bin/ec
 
+# Java
+brew install openjdk
 # Binary used for markdown previews
 brew install cmark-gfm
 # Spell check
@@ -25,4 +27,7 @@ brew install graphviz
 # plantuml-mode support
 brew install plantuml
 # org-mode needs to know where the jar is
-ln -s `find /usr -name "plantuml.jar" 2>/dev/null | head -1` ~/.emacs.d/plantuml.jar
+ln -s `find /opt/homebrew -name "plantuml.jar" 2>/dev/null | head -1` ~/.emacs.d/plantuml.jar
+brew install languagetool
+# languagetool
+ln -s `find /opt/homebrew -name "languagetool-server.jar" 2>/dev/null | head -1` ~/.emacs.d/languagetool-server.jar

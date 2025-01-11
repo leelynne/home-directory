@@ -4,8 +4,11 @@
 
 ;;; Code:
 
+;; Tabby tabs
 (setq-default tab-width 4)
 (setq default-tab-width 4)
+(setq js-indent-level 4)
+
 (visual-line-mode t)
 
 ;; store all backup and autosave files in the tmp dir
@@ -93,6 +96,15 @@
   :diminish editorconfig-mode
   :config
   (editorconfig-mode 1))
-  
+
+;; chatgpt
+(unless (package-installed-p 'vc-use-package)
+  (package-vc-install "https://github.com/slotThe/vc-use-package"))
+(require 'vc-use-package)
+(use-package openai :vc (:fetcher github :repo emacs-openai/openai))
+
+(use-package chatgpt :vc (:fetcher github :repo emacs-openai/chatgpt))
+;; (setq openai-key)
+
 (provide 'leef-editor)
 ;;; leef-editor.el ends here
