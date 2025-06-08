@@ -45,6 +45,10 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    '(consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
+ '(package-vc-selected-packages
+   '((chatgpt :vc-backend Git :url "https://github.com/emacs-openai/chatgpt")
+	 (openai :vc-backend Git :url "https://github.com/emacs-openai/openai")
+	 (vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
