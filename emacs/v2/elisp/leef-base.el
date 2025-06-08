@@ -27,6 +27,7 @@
 (use-package magit)
 (use-package diminish)
 (use-package s) ;; string manipulation
+(use-package rg) ;; ripgrep
 
 ;; Helm
 (use-package helm)
