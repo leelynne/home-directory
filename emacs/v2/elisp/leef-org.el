@@ -6,7 +6,9 @@
 
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
-(use-package org-roam)
+(use-package org-roam
+  :bind (("C-c n f" . org-roam-node-find))  
+  )
 
 ;; (setq org-roam-node-display-template "${title:*}")
 (setq org-roam-node-display-template

@@ -9,3 +9,5 @@ else
 fi
 
 
+
+. "$HOME/.local/bin/env"

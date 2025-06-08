@@ -44,3 +44,5 @@ if [ -f ~/.tmux/tmux-git/tmux-git.sh ]; then
 fi
 
 source ~/.local_environment
+
+. "$HOME/.local/bin/env"

@@ -71,5 +71,13 @@
 ;; kotlin
 (use-package kotlin-mode)
 
+(use-package aidermacs
+  :bind (("C-c a" . aidermacs-transient-menu))
+  :config
+  :custom
+  ; See the Configuration section below
+  (aidermacs-use-architect-mode t)
+  (aidermacs-default-model "sonnet"))
+
 (provide 'leef-code)
 ;;; leef-code.el ends here
