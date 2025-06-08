@@ -45,7 +45,6 @@
 
 (use-package org-ref)
 (use-package org-chef)
-(use-package helm-bibtex)
 (use-package ox-jira)
 (use-package ox-gfm)
 
@@ -199,7 +198,6 @@
 (require 'org-roam)
 
 (setq org-roam-directory "~/Dropbox/org/notes"
-      ;;org-roam-completion-system 'helm
       ;; Don't sync the cache across machines
       org-roam-db-location "~/.cache/org-roam/org-roam.db"
       )
@@ -239,8 +237,7 @@
       org-ref-default-bibliography '("~/Dropbox/zotero/bib/zotero.bib")
       org-ref-pdf-directory "~/Dropbox/pdfdocs")
 
-;; helm-bibtex
-(require 'helm-bibtex)
+
 (setq bibtex-completion-bibliography "~/Dropbox/zotero/bib/zotero.bib"
       bibtex-completion-pdf-field "file"
       )
