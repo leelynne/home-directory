@@ -10,6 +10,7 @@
 (use-package lsp-treemacs)
 (use-package dap-mode)
 
+(use-package consult-lsp)
 ;;(require 'lsp-ui)
 (require 'lsp-ui-imenu)
 (require 'lsp-mode)
@@ -30,7 +31,8 @@
 (define-key lsp-ui-mode-map (kbd "C-c C-l e") 'lsp-execute-code-action)
 (define-key lsp-ui-mode-map (kbd "C-c C-d") 'lsp-ui-doc-show)
 (define-key lsp-ui-mode-map (kbd "C-c C-u") 'lsp-ui-doc-focus-frame)
-
+(define-key lsp-ui-mode-map (kbd "C-c C-f") 'consult-lsp-file-symbols)
+(define-key lsp-ui-mode-map (kbd "C-c C-g") 'consult-lsp-symbols)
 
 (setq lsp-ui-sideline-enable t)
 (setq lsp-ui-doc-enable t)

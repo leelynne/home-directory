@@ -8,6 +8,7 @@
 (use-package flycheck
   :bind* (("C-." . flycheck-next-error)
 		 ("C-," . flycheck-previous-error)))
+(use-package consult-flycheck)
 
 ;; Spell check comments
 (add-hook 'prog-mode-hook (lambda ()

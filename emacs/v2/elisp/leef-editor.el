@@ -17,8 +17,8 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-(defvar savefile-dir (expand-file-name "savefile" user-emacs-directory)
-  "For automatically generated save/history-files.")
+;;(defvar savefile-dir (expand-file-name "savefile" user-emacs-directory)
+;;  "For automatically generated save/history-files.")
 
 ;; revert buffers automatically when underlying files are changed externally
 (global-auto-revert-mode t)
@@ -33,17 +33,18 @@
 
 (use-package flyspell
   :config
-  (setq ispell-program-name "aspell" ; use aspell instead of ispell
+  (setq ispell-program-name "aspell" ; use aspell instead ofispell
 		ispell-extra-args '("--sug-mode=ultra")))
 
 (use-package projectile
   :config
-  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
+;;  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
   (projectile-mode t))
+
 ;; saveplace remembers your location in a file when saving files
-(setq save-place-file (expand-file-name "saveplace" savefile-dir))
+;;(setq save-place-file (expand-file-name "saveplace" savefile-dir))
 ;; activate it for all buffers
-(save-place-mode 1)
+;;(save-place-mode 1)
 
 ;; anzu-mode enhances isearch & query-replace by showing total matches and current match position
 (use-package anzu
@@ -53,25 +54,21 @@
   :config 
   (global-anzu-mode))
 
-;; savehist keeps track of some history
-(require 'savehist)
-(setq savehist-additional-variables
-      ;; search entries
-      '(search-ring regexp-search-ring)
-      ;; save every minute
-      savehist-autosave-interval 60
-      ;; keep the home clean
-      savehist-file (expand-file-name "savehist" savefile-dir))
-(savehist-mode +1)
+(use-package savehist
+  :init
+  :config
+  (setq savehist-autosave-interval 60)
+  (add-to-list 'savehist-additional-variables 'search-ring)
+  (savehist-mode))
 
 ;; recent files
-(require 'recentf)
-(setq recentf-save-file (expand-file-name "recentf" savefile-dir)
-      recentf-max-saved-items 500
-      recentf-max-menu-items 15
-      ;; disable recentf-cleanup on Emacs start, because it can cause
-      ;; problems with remote files
-      recentf-auto-cleanup 'never)
+(use-package recentf
+  :init
+  :config
+  (setq recentf-max-saved-items 500)
+  (setq recentf-max-menu-items 15)
+  (setq recentf-auto-clean 'never)
+  (recentf-mode))
 
 ;; undo
 (use-package undo-tree
