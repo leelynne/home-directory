@@ -64,7 +64,6 @@
                             (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
                             (local-set-key (kbd "M-/") 'lsp-ui-peek-find-references)
                             (local-set-key (kbd "<C-tab>") 'company-capf)
-                            (local-set-key (kbd "C-c C-f") 'helm-lsp-workspace-symbol)
                             (local-set-key (kbd "C-c C-d") 'lsp-ui-doc-show)
                           ))
 

@@ -7,7 +7,6 @@
 ;; Additions to prelude-lsp module
 (use-package lsp-mode)
 (use-package lsp-ui)
-(use-package helm-lsp)
 (use-package lsp-treemacs)
 (use-package dap-mode)
 
@@ -31,7 +30,6 @@
 (define-key lsp-ui-mode-map (kbd "C-c C-l e") 'lsp-execute-code-action)
 (define-key lsp-ui-mode-map (kbd "C-c C-d") 'lsp-ui-doc-show)
 (define-key lsp-ui-mode-map (kbd "C-c C-u") 'lsp-ui-doc-focus-frame)
-(define-key lsp-ui-mode-map (kbd "C-c C-f") 'helm-lsp-workspace-symbol)
 
 
 (setq lsp-ui-sideline-enable t)
