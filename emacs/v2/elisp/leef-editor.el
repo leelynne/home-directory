@@ -35,11 +35,20 @@
   :config
   (setq ispell-program-name "aspell" ; use aspell instead ofispell
 		ispell-extra-args '("--sug-mode=ultra")))
+(use-package consult-flyspell)
 
 (use-package projectile
+  :ensure t
+  :init
+  (setq projectile-project-search-path '("~/repos/"))
   :config
+  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
+  (global-set-key (kbd "C-c p") 'projectile-command-map)
 ;;  (setq projectile-cache-file (expand-file-name  "projectile.cache" savefile-dir))
-  (projectile-mode t))
+  (projectile-mode +1))
+
+
+(use-package consult-projectile)
 
 ;; saveplace remembers your location in a file when saving files
 ;;(setq save-place-file (expand-file-name "saveplace" savefile-dir))
