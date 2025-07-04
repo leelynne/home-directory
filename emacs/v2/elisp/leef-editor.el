@@ -76,7 +76,7 @@
   :config
   (setq recentf-max-saved-items 500)
   (setq recentf-max-menu-items 15)
-  (setq recentf-auto-clean 'never)
+  (setq recentf-auto-cleanup 'never)
   (recentf-mode))
 
 ;; undo

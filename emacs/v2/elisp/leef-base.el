@@ -31,7 +31,8 @@
 
 
 (global-unset-key (kbd "C-x c"))
-
+(global-set-key (kbd "C-x C-=") 'text-scale-increase)
+(global-set-key (kbd "C-x C--") 'text-scale-decrease)
 ;; Completion
 ;; Consult configuration
 (use-package consult
