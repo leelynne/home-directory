@@ -28,7 +28,7 @@
 (use-package diminish)
 (use-package s) ;; string manipulation
 (use-package rg) ;; ripgrep
-
+(use-package eat) ;; terminal emulator
 
 (global-unset-key (kbd "C-x c"))
 (global-set-key (kbd "C-x C-=") 'text-scale-increase)
@@ -197,6 +197,29 @@
 
 
 ;; misc
+;; window resizing
+(require 'repeat)
+(repeat-mode 1)
+
+(global-set-key (kbd "C-S-<left>")  #'shrink-window-horizontally)
+(global-set-key (kbd "C-S-<right>") #'enlarge-window-horizontally)
+(global-set-key (kbd "C-S-<down>")  #'shrink-window)
+(global-set-key (kbd "C-S-<up>")    #'enlarge-window)
+
+(defvar-keymap window-resize-repeat-map
+  :doc "Repeat map for window resizing."
+  :repeat t
+  "<left>"  #'shrink-window-horizontally
+  "<right>" #'enlarge-window-horizontally
+  "<down>"  #'shrink-window
+  "<up>"    #'enlarge-window)
+
+(dolist (cmd '(shrink-window-horizontally
+               enlarge-window-horizontally
+               shrink-window
+               enlarge-window))
+  (put cmd 'repeat-map 'window-resize-repeat-map))
+
 ;; Always load newest byte code
 ;;(setq load-prefer-newer t)
 
