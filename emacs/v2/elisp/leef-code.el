@@ -18,6 +18,20 @@
   :config
   (global-hl-todo-mode 1))
 
+;; treemacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (setq treemacs-width 50
+        treemacs-position 'right
+		treemacs-tag-follow-mode t
+        treemacs-follow-after-init t))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
+
 ;; yaml
 (use-package yaml-mode
   :hook ((yaml-mode . whitespace-mode)
@@ -28,6 +42,8 @@
 						  (lsp)))
 (require 'lsp-bash)
 
+;; terraform
+(use-package terraform-mode)
 
 ;; scala
 (use-package scala-mode
@@ -45,7 +61,6 @@
 
 ;; java
 (use-package lsp-java)
-(require 'lsp-java)
 (add-hook 'java-mode-hook #'lsp)
 (add-hook 'java-mode-hook (lambda ()
                             ;;(add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -78,6 +93,13 @@
   ; See the Configuration section below
   (aidermacs-use-architect-mode t)
   (aidermacs-default-model "sonnet"))
+
+(use-package claude-code-ide
+  :vc (:fetcher github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (setq claude-code-ide-terminal-backend 'eat)
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
 
 (provide 'leef-code)
 ;;; leef-code.el ends here

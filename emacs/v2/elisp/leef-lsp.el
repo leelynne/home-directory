@@ -5,16 +5,32 @@
 ;;; Code:
 
 ;; Additions to prelude-lsp module
-(use-package lsp-mode)
-(use-package lsp-ui)
-(use-package lsp-treemacs)
+(use-package lsp-mode
+  :config
+  (setq lsp-enable-snippet nil))
+
+(use-package lsp-ui
+  :config
+  (setq lsp-ui-imenu-auto-refresh t
+		lsp-ui-sideline-enable t
+		lsp-ui-doc-enable t
+		lsp-ui-peek-enable t
+		lsp-ui-peek-always-show t
+		lsp-ui-imenu-auto-refresh t
+		lsp-ui-sideline-actions-icon nil))
+
+;; TODO: lsp-treemacs doesn't pick these up from the treemacs configuration correctly for some unknown reason
+(setq treemacs-width 50)
+(setq treemacs-position 'right)
+
+(use-package lsp-treemacs
+  :after (treemacs)
+  :config
+  (setq	lsp-treemacs-sync-mode 1))
+
 (use-package dap-mode)
 
 (use-package consult-lsp)
-;;(require 'lsp-ui)
-(require 'lsp-ui-imenu)
-(require 'lsp-mode)
-(require 'dap-mode)
 
 ;; lsp-ui bindings and settings
 (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
@@ -33,16 +49,6 @@
 (define-key lsp-ui-mode-map (kbd "C-c C-u") 'lsp-ui-doc-focus-frame)
 (define-key lsp-ui-mode-map (kbd "C-c C-f") 'consult-lsp-file-symbols)
 (define-key lsp-ui-mode-map (kbd "C-c C-g") 'consult-lsp-symbols)
-
-(setq lsp-ui-sideline-enable t)
-(setq lsp-ui-doc-enable t)
-(setq lsp-ui-peek-enable t)
-(setq lsp-ui-peek-always-show t)
-
-(setq lsp-enable-snippet nil)
-(setq lsp-ui-sideline-actions-icon nil)
-
-(setq lsp-treemacs-sync-mode 1)
 
 ;; templ
 (add-to-list 'lsp-language-id-configuration '(".*\\.templ$" . "templ"))
