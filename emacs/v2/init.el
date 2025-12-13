@@ -44,7 +44,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(terraform-mode eat claude-code-ide consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
+   '(treesit-auto terraform-mode eat claude-code-ide consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
  '(package-vc-selected-packages
    '((zotxt :vc-backend Git :url "https://github.com/egh/zotxt-emacs")
 	 (claude-code-ide :vc-backend Git :url "https://github.com/manzaltu/claude-code-ide.el")

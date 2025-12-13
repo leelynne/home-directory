@@ -1,1 +1,4 @@
 alias ls='ls -Gla'
+alias emacs='emacsclient -c -a ""'
+alias ec='emacsclient -c -a ""'
+alias emacsrv='/usr/local/bin/emacs'

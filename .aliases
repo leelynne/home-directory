@@ -1,4 +1,4 @@
 alias vi='vim' 
 alias scp='/usr/bin/scp -2'
 alias jsonpp='python -mjson.tool'
-
+alias claude='/Users/lee/.claude/local/claude'
