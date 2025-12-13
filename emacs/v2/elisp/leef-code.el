@@ -10,6 +10,17 @@
 		 ("C-," . flycheck-previous-error)))
 (use-package consult-flycheck)
 
+(use-package treesit-auto
+  :ensure t
+  :config
+  (setq treesit-auto-install nil)    ;; ask to install missing grammars
+  (global-treesit-auto-mode))
+
+;; Add both common locations; only the one that exists will be used.
+(dolist (dir '("~/.emacs.d/tree-sitter" "~/.emacs.d/treesit"
+               "~/Library/Application Support/Emacs/tree-sitter"))
+  (when (file-directory-p (expand-file-name dir))
+    (add-to-list 'treesit-extra-load-path (expand-file-name dir))))
 ;; Spell check comments
 (add-hook 'prog-mode-hook (lambda ()
 							(flyspell-prog-mode)
@@ -100,6 +111,18 @@
   :config
   (setq claude-code-ide-terminal-backend 'eat)
   (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
+;; json
+;; Prefer Tree-sitter JSON if available
+(when (fboundp 'json-ts-mode)
+  (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode)))
+
+;; Formatter via jq (install jq on your system)
+(use-package reformatter
+  :config
+  (reformatter-define jq-format
+    :program "jq" :args '("."))
+  (add-hook 'json-ts-mode-hook #'jq-format-on-save-mode))
 
 (provide 'leef-code)
 ;;; leef-code.el ends here

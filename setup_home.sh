@@ -15,8 +15,5 @@ case "${plat}" in
     Linux*)
         ;;
     Darwin*)
-        # On osx directly create 'ec' as an executable
-        sudo cp darwin_ec /usr/local/bin/ec
-        sudo chmod +x /usr/loca/bin/ec
         ;;
 esac

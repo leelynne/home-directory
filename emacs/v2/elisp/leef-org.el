@@ -173,6 +173,12 @@
   '(require 'ox-gfm nil t)
   )
 
+;; Add option to latex to allow for bigger fonts in pdfs
+(add-to-list 'org-latex-classes
+  '("extarticle"
+    "\\documentclass{extarticle}"
+    ("\\section{%s}" . "\\section*{%s}")
+    ("\\subsection{%s}" . "\\subsection*{%s}")))
 ;; Deft
 (defun cm/deft-parse-title (file contents)
   "Parse the given FILE and CONTENTS and determine the title.
