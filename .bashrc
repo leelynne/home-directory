@@ -46,3 +46,4 @@ fi
 source ~/.local_environment
 
 . "$HOME/.local/bin/env"
+. "$HOME/.cargo/env"

@@ -105,11 +105,12 @@
   (aidermacs-use-architect-mode t)
   (aidermacs-default-model "sonnet"))
 
+;; Claude
 (use-package claude-code-ide
   :vc (:fetcher github :repo "manzaltu/claude-code-ide.el")
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
-  (setq claude-code-ide-terminal-backend 'eat)
+  (setq claude-code-ide-terminal-backend 'vterm)
   (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
 
 ;; json
@@ -117,11 +118,21 @@
 (when (fboundp 'json-ts-mode)
   (add-to-list 'major-mode-remap-alist '(json-mode . json-ts-mode)))
 
+;; 4-space indentation for JSON
+(add-hook 'json-ts-mode-hook
+          (lambda ()
+            (setq-local json-ts-mode-indent-offset 4)
+            (setq-local js-indent-level 4)))
+(add-hook 'json-mode-hook
+          (lambda ()
+            (setq-local js-indent-level 4)))
+
 ;; Formatter via jq (install jq on your system)
 (use-package reformatter
   :config
   (reformatter-define jq-format
-    :program "jq" :args '("."))
+    :program "jq"
+	:args (list "--indent" (number-to-string tab-width) "."))
   (add-hook 'json-ts-mode-hook #'jq-format-on-save-mode))
 
 (provide 'leef-code)
