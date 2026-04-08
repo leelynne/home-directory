@@ -201,20 +201,43 @@
       org-roam-db-location "~/.cache/org-roam/org-roam.db"
       )
 
-;; (setq org-roam-capture-templates
-;;       '(("d" "default" plain #'org-roam-capture--get-point
-;;          "%?"
-;;          :file-name "%<%Y%m%d%H%M%S>-${slug}"
-;;          :head "#+title: ${title}\n"
-;;          :unnarrowed t)
-;;         ("i" "interview" plain #'org-roam-capture--get-point
-;;          "%?"
-;;          :file-name "interviews/${slug}"
-;;          :head "
-;; #+title: ${title}
-;; #+roam_tags: interview\n"
-;;          :unnarrowed t))
-;;       )
+;; org-roam-dailies
+(require 'org-roam-dailies)
+
+(setq org-roam-dailies-directory "daily/")
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry
+         "* %?"
+         :target (file+head "%<%Y-%m-%d>.org"
+                             "#+title: %<%Y-%m-%d>\n")
+         :empty-lines 1)
+        ("j" "journal" entry
+         "* %<%H:%M> %?\n"
+         :target (file+head "%<%Y-%m-%d>.org"
+                             "#+title: %<%Y-%m-%d>\n")
+         :empty-lines 1)
+        ("t" "task" entry
+         "* TODO %?\nSCHEDULED: %t\n"
+         :target (file+head+olp "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n"
+                                ("Tasks"))
+         :empty-lines 1)
+        ("m" "meeting" entry
+         "* %? :meeting:\n%U\n** Attendees\n- \n** Notes\n- \n** Action Items\n- [ ] "
+         :target (file+head+olp "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n"
+                                ("Meetings"))
+         :empty-lines 1)
+        ("l" "link" entry
+         "* %? :link:\n%U\n%a\n"
+         :target (file+head+olp "%<%Y-%m-%d>.org"
+                                "#+title: %<%Y-%m-%d>\n"
+                                ("Links"))
+         :empty-lines 1)))
+
+(global-set-key (kbd "C-c n d") 'org-roam-dailies-map)
+
 
 (add-to-list 'display-buffer-alist
              '("\\*org-roam\\*"
@@ -223,7 +246,7 @@
                (window-width . 0.33)
                (window-height . fit-window-to-buffer)))
 
-(add-hook 'after-init-hook 'org-roam-setup)
+(add-hook 'after-init-hook 'org-roam-db-autosync-enable)
 (add-hook 'org-mode-hook (lambda()
                            (local-set-key (kbd "<C-tab>") 'completion-at-point)
                            ))
