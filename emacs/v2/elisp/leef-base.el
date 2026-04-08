@@ -3,6 +3,18 @@
 ;; Bootstrap-y type things
 ;;; Code:
 
+;; Keep Emacs-generated state files out of the config directory
+;; These must be set before no-littering loads so it redirects paths correctly
+(use-package no-littering
+  :demand t
+  :init
+  (setq no-littering-etc-directory "~/.config/emacs/etc/"
+        no-littering-var-directory "~/.cache/emacs/var/")
+  :config
+  ;; Keep auto-save files in the cache too
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
 ;; UI
 (use-package zenburn-theme
   :config

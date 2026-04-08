@@ -32,7 +32,6 @@
 (require 'leef-code)
 (require 'leef-go)
 
-
 ;; warn when opening files bigger than 100MB
 ;;(setq large-file-warning-threshold 100000000)
 
@@ -44,7 +43,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(efrit vterm claude-code-ide treesit-auto terraform-mode eat consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
+   '(no-littering efrit vterm claude-code-ide treesit-auto terraform-mode eat consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
  '(package-vc-selected-packages
    '((efrit :vc-backend Git :url "https://github.com/steveyegge/efrit")
 	 (claude-code-ide :vc-backend Git :url "https://github.com/manzaltu/claude-code-ide.el")
