@@ -44,10 +44,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(treesit-auto terraform-mode eat claude-code-ide consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
+   '(efrit vterm claude-code-ide treesit-auto terraform-mode eat consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
  '(package-vc-selected-packages
-   '((zotxt :vc-backend Git :url "https://github.com/egh/zotxt-emacs")
+   '((efrit :vc-backend Git :url "https://github.com/steveyegge/efrit")
 	 (claude-code-ide :vc-backend Git :url "https://github.com/manzaltu/claude-code-ide.el")
+	 (zotxt :vc-backend Git :url "https://github.com/egh/zotxt-emacs")
 	 (chatgpt :vc-backend Git :url "https://github.com/emacs-openai/chatgpt")
 	 (openai :vc-backend Git :url "https://github.com/emacs-openai/openai")
 	 (vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package"))))

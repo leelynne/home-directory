@@ -54,13 +54,6 @@
   (setq langtool-server-user-arguments '("--config" 'expand-file-name "~/.emacs.d/languagetool.properties"))
   )
 
-;; project management helpers
-(use-package vulpea
-  :ensure t
-  ;; hook into org-roam-db-autosync-mode you wish to enable
-  ;; persistence of meta values (see respective section in README to
-  ;; find out what meta means)
-  :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable)))
 
 ;; org
 (require 'org)
@@ -293,8 +286,16 @@
 ;; dynamically add any org-roam files with TODOs to org agenda
 ;;   1. Auto tag any org-roam note that has TODO as a 'project'
 ;;   2. Dynamically feed only these file to org agenda
-(require 'vulpea)
 
+;; project management helpers
+(use-package vulpea
+  :ensure t
+  ;; hook into org-roam-db-autosync-mode you wish to enable
+  ;; persistence of meta values (see respective section in README to
+  ;; find out what meta means)
+  ;; :hook ((org-roam-db-autosync-mode . vulpea-db-autosync-enable)) ;; vulpea-db-autosync-enable not working
+  )
+(require 'vulpea)
 ;; Auto tag any org-roam note that has a TODO as a 'project'
 (defun mgmt-project-p ()
   "Return non-nil if current buffer has any todo entry.

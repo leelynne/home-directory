@@ -56,5 +56,26 @@
                       :new-connection (lsp-stdio-connection '("templ" "lsp" "-goplsRPCTrace"))
                       :activation-fn (lsp-activate-on "templ")
                       :server-id 'templ))
+
+;; cedar
+(define-derived-mode cedar-mode prog-mode "Cedar"
+  "Major mode for Cedar policy files."
+  (setq-local comment-start "//")
+  (setq-local comment-end "")
+  (setq-local font-lock-defaults
+              '((("\\<\\(permit\\|forbid\\|when\\|unless\\|in\\|is\\|has\\|like\\|if\\|then\\|else\\|true\\|false\\)\\>" . font-lock-keyword-face)
+                 ("\\<\\([A-Z][A-Za-z0-9_]*\\)::[A-Za-z0-9_:\"]*" . font-lock-type-face)
+                 ("\"[^\"]*\"" . font-lock-string-face)
+                 ("\\(principal\\|action\\|resource\\|context\\)\\>" . font-lock-variable-name-face)
+                 ("//.*$" . font-lock-comment-face)))))
+(add-to-list 'auto-mode-alist '("\\.cedar\\'" . cedar-mode))
+(add-to-list 'lsp-language-id-configuration '(cedar-mode . "cedar"))
+(lsp-register-client (make-lsp-client
+                      :new-connection (lsp-stdio-connection '("cedar-language-server"))
+                      :activation-fn (lsp-activate-on "cedar")
+                      :major-modes '(cedar-mode)
+                      :server-id 'cedar))
+(add-hook 'cedar-mode-hook #'lsp)
+
 (provide 'leef-lsp)
 ;;; leef-lsp.el ends here
