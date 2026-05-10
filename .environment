@@ -11,4 +11,4 @@ export EDITOR="emacsclient -c -a ''"
 export VISUAL="emacsclient -c -a ''"
 export ESHELL=/bin/bash
 
-export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin
+export PATH=$PATH:$HOME/go/bin:$HOME/.local/bin:$HOME/.cargo/bin

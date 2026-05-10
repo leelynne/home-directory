@@ -18,6 +18,15 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
+;; retry package refresh once after failure
+(defun my/use-package-ensure-with-retry (orig &rest args)
+  (condition-case _
+      (apply orig args)
+    ((error file-error)
+     (package-refresh-contents)
+     (apply orig args))))
+(advice-add 'use-package-ensure-elpa :around #'my/use-package-ensure-with-retry)
+
 (eval-when-compile
   (require 'use-package))
 (require 'use-package-ensure)

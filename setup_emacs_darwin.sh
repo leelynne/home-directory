@@ -24,10 +24,5 @@ brew install cmark-gfm
 brew install aspell
 # dot for org-roam
 brew install graphviz
-# plantuml-mode support
-brew install plantuml
-# org-mode needs to know where the jar is
-ln -s `find /opt/homebrew -name "plantuml.jar" 2>/dev/null | head -1` ~/.emacs.d/plantuml.jar
-brew install languagetool
-# languagetool
-ln -s `find /opt/homebrew -name "languagetool-server.jar" 2>/dev/null | head -1` ~/.emacs.d/languagetool-server.jar
+# for vterm
+brew install cmake
