@@ -55,6 +55,29 @@
 
 ;; terraform
 (use-package terraform-mode)
+(use-package hcl-mode)
+
+;; containers
+(use-package dockerfile-mode)
+
+;; graphql
+(use-package graphql-mode)
+
+;; markdown
+(use-package markdown-mode)
+
+;; pandoc
+(use-package pandoc-mode)
+(use-package ox-pandoc)
+
+;; string case conversion
+(use-package string-inflection)
+
+;; templ
+(use-package templ-ts-mode)
+
+;; grep editing
+(use-package wgrep)
 
 ;; scala
 (use-package scala-mode
@@ -107,7 +130,7 @@
 
 ;; Claude
 (use-package claude-code-ide
-  :vc (:fetcher github :repo "manzaltu/claude-code-ide.el")
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
   (setq claude-code-ide-terminal-backend 'ghostel)

@@ -40,8 +40,12 @@
 (use-package diminish)
 (use-package s) ;; string manipulation
 (use-package rg) ;; ripgrep
-(use-package eat) ;; terminal emulator
-(use-package ghostel) ;; terminal emulator
+ ;; terminal emulators
+(use-package eat)
+(use-package ghostel
+  :vc (:url "https://github.com/dakra/ghostel"
+       :lisp-dir "lisp"
+       :rev :newest))
 
 (global-unset-key (kbd "C-x c"))
 (global-set-key (kbd "C-x C-=") 'text-scale-increase)

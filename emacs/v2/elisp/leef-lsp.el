@@ -31,6 +31,7 @@
 (use-package dap-mode)
 
 (use-package consult-lsp)
+(use-package lsp-docker)
 
 ;; lsp-ui bindings and settings
 (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)

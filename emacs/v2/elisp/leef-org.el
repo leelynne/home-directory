@@ -8,6 +8,9 @@
 ;; zotxt to integrate org-mode and zotero bib
 (use-package org-roam
   :bind (("C-c n f" . org-roam-node-find))
+  :init
+  (setq org-roam-directory "~/Dropbox/org/notes"
+        org-roam-db-location "~/.cache/org-roam/org-roam.db")
   :config (org-roam-db-autosync-mode))
 
 ;; (setq org-roam-node-display-template "${title:*}")
@@ -186,10 +189,6 @@
 ;; org-roam
 (require 'org-roam)
 
-(setq org-roam-directory "~/Dropbox/org/notes"
-      ;; Don't sync the cache across machines
-      org-roam-db-location "~/.cache/org-roam/org-roam.db"
-      )
 
 ;; org-roam-dailies
 (require 'org-roam-dailies)
