@@ -110,7 +110,7 @@
   :vc (:fetcher github :repo "manzaltu/claude-code-ide.el")
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
-  (setq claude-code-ide-terminal-backend 'vterm)
+  (setq claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
 
 ;; json

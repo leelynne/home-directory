@@ -41,7 +41,7 @@
 (use-package s) ;; string manipulation
 (use-package rg) ;; ripgrep
 (use-package eat) ;; terminal emulator
-(use-package vterm) ;; most compatibility
+(use-package ghostel) ;; terminal emulator
 
 (global-unset-key (kbd "C-x c"))
 (global-set-key (kbd "C-x C-=") 'text-scale-increase)

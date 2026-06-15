@@ -7,23 +7,13 @@
 ;; ox-gfm for github flavored markdown exports for org-mode
 ;; zotxt to integrate org-mode and zotero bib
 (use-package org-roam
-  :bind (("C-c n f" . org-roam-node-find))  
-  )
+  :bind (("C-c n f" . org-roam-node-find))
+  :config (org-roam-db-autosync-mode))
 
 ;; (setq org-roam-node-display-template "${title:*}")
 (setq org-roam-node-display-template
     (concat "${title:*} "
         (propertize "${tags:25}" 'face 'org-tag)))
-
-;; This flips widow-width and frame-width usage for the completion mini-buffer.  This seems to be a helm specific issue.
-;; https://github.com/org-roam/org-roam/issues/1578#issuecomment-890486453
-(defun org-roam-node--to-candidate (node)
-      "Return a minibuffer completion candidate given NODE."
-      (let ((candidate-main (org-roam-node--format-entry
-                             node
-                             (if (bufferp (current-buffer))
-                                 (window-width) (-1 frame-width)))))
-        (cons (propertize candidate-main 'node node) node)))
 
 ;; Adds tags to the identity of the node. This is different than just adding tags to the display
 ;;(defun org-roam-node-read--annotation (node)
@@ -51,7 +41,7 @@
 (use-package langtool
   :config
   (setq langtool-language-tool-server-jar "~/.emacs.d/languagetool-server.jar")
-  (setq langtool-server-user-arguments '("--config" 'expand-file-name "~/.emacs.d/languagetool.properties"))
+  (setq langtool-server-user-arguments `("--config" ,(expand-file-name "~/.emacs.d/languagetool.properties")))
   )
 
 
@@ -246,9 +236,8 @@
                (window-width . 0.33)
                (window-height . fit-window-to-buffer)))
 
-(add-hook 'after-init-hook 'org-roam-db-autosync-enable)
 (add-hook 'org-mode-hook (lambda()
-                           (local-set-key (kbd "<C-tab>") 'completion-at-point)
+						   (local-set-key (kbd "<C-tab>") (lambda () (interactive) (company-begin-backend 'company-capf)))
                            ))
 
 
@@ -262,18 +251,6 @@
 
 (setq bibtex-completion-bibliography "~/Dropbox/zotero/bib/zotero.bib"
       bibtex-completion-pdf-field "file"
-      )
-
-;; org-roam-server
-(setq org-roam-server-host "127.0.0.1"
-      org-roam-server-port 8080
-      org-roam-server-export-inline-images t
-      org-roam-server-authenticate nil
-      org-roam-server-network-poll t
-      org-roam-server-network-arrows nil
-      org-roam-server-network-label-truncate t
-      org-roam-server-network-label-truncate-length 60
-      org-roam-server-network-label-wrap-length 20
       )
 
 (defun org-hide-properties ()
