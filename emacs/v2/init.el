@@ -6,6 +6,7 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
+
 (package-initialize)
 
 ;; load newest byte code
@@ -14,7 +15,7 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-;; bootstrap use-package	     
+;; bootstrap use-package
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
@@ -31,6 +32,19 @@
   (require 'use-package))
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
+
+;; Collect all use-package names as they're declared, then merge into
+;; package-selected-packages after init (after custom-set-variables has run).
+(defvar my/use-package-selected nil)
+(defun my/use-package-handler/:ensure (orig name keyword args rest state)
+  (add-to-list 'my/use-package-selected name)
+  (funcall orig name keyword args rest state))
+(advice-add 'use-package-handler/:ensure :around #'my/use-package-handler/:ensure)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (dolist (pkg my/use-package-selected)
+              (add-to-list 'package-selected-packages pkg))))
 
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
@@ -52,14 +66,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(no-littering efrit vterm claude-code-ide treesit-auto terraform-mode eat consult-projectile consult-flyspell consult-flycheck consult-dir consult-lsp marginalia consult-org-roam rg hcl-mode pandoc-mode aidermacs templ-ts-mode graphql-mode openai vc-use-package chatgpt use-package))
- '(package-vc-selected-packages
-   '((efrit :vc-backend Git :url "https://github.com/steveyegge/efrit")
-	 (claude-code-ide :vc-backend Git :url "https://github.com/manzaltu/claude-code-ide.el")
-	 (zotxt :vc-backend Git :url "https://github.com/egh/zotxt-emacs")
-	 (chatgpt :vc-backend Git :url "https://github.com/emacs-openai/chatgpt")
-	 (openai :vc-backend Git :url "https://github.com/emacs-openai/openai")
-	 (vc-use-package :vc-backend Git :url "https://github.com/slotThe/vc-use-package"))))
+   '(tblui no-littering zenburn-theme which-key magit diminish s rg eat ghostel consult vertico emacs orderless marginalia consult-dir company avy ace-window flyspell consult-flyspell projectile consult-projectile anzu savehist recentf undo-tree super-save editorconfig openai chatgpt org-roam zotxt deft org-roam-bibtex org-roam-ui org-roam-timestamps org-ref org-chef ox-jira ox-gfm langtool ob-async ob-deno ob-tmux ob-dart ob-go ob-kotlin ob-rust ob-http ob-mermaid ob-php ob-sql-mode ob-typescript consult-org-roam vulpea lsp-mode lsp-ui lsp-treemacs dap-mode consult-lsp lsp-docker flycheck consult-flycheck treesit-auto hl-todo treemacs treemacs-projectile yaml-mode terraform-mode hcl-mode dockerfile-mode graphql-mode markdown-mode pandoc-mode ox-pandoc string-inflection templ-ts-mode wgrep scala-mode lsp-metals lsp-java kotlin-mode aidermacs claude-code-ide reformatter go-mode go-dlv go-rename go-projectile go-eldoc go-guru))
+)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

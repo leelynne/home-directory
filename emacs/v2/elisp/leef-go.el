@@ -8,6 +8,8 @@
 (use-package go-dlv)
 (use-package go-rename)
 (use-package go-projectile)
+(use-package go-eldoc)
+(use-package go-guru)
 
 (require 'lsp-go)
 (require 'dap-dlv-go)
