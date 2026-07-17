@@ -54,6 +54,7 @@
 (require 'leef-lsp)
 (require 'leef-code)
 (require 'leef-go)
+(require 'leef-caddy)
 
 ;; warn when opening files bigger than 100MB
 ;;(setq large-file-warning-threshold 100000000)
