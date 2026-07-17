@@ -236,6 +236,7 @@
                (window-height . fit-window-to-buffer)))
 
 (add-hook 'org-mode-hook (lambda()
+						   (company-mode 1)
 						   (local-set-key (kbd "<C-tab>") (lambda () (interactive) (company-begin-backend 'company-capf)))
                            ))
 
