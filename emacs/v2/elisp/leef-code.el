@@ -156,8 +156,33 @@ eclipse.jdt.ls issue #2053). They have to agree with the XML -- GoogleStyle is
   (add-hook hook #'eglot-ensure)
   (add-hook hook #'leef/java-eglot-setup))
 
-;; kotlin
+;; kotlin -- eglot maps kotlin-mode/kotlin-ts-mode to kotlin-language-server by
+;; default (brew install kotlin-language-server). JetBrains' official kotlin-lsp
+;; was tried and rejected: 1.3GB install, spins up its own Gradle daemon, never
+;; produced a single diagnostic in testing, and crashed on buffer revert --
+;; consistent with its own "Alpha state" label. Revisit once it matures.
 (use-package kotlin-mode)
+(add-hook 'kotlin-mode-hook #'eglot-ensure)
+
+;; ktlint via flycheck, separate from eglot: kotlin-language-server's own
+;; formatter is ktfmt, not ktlint, so LSP diagnostics never cover ktlint's
+;; style rules (import ordering, spacing, wrapping...). flycheck-kotlin pipes
+;; the buffer through `ktlint --stdin'. The executable is overridden per
+;; project via .dir-locals.el (flycheck-kotlin-ktlint-executable), since
+;; ktlint's rule set has changed release to release and each repo pins its
+;; own version through its build tool (e.g. the kotlinter Gradle plugin).
+(use-package flycheck-kotlin
+  :after (flycheck kotlin-mode)
+  :config
+  (flycheck-kotlin-setup))
+
+;; flycheck-kotlin-ktlint-executable is :risky, so its .dir-locals.el value
+;; only ever gets a plain y/n prompt -- Emacs won't offer to remember a risky
+;; variable (unlike merely "unsafe" ones, where `!' persists a whitelist
+;; entry). Trust it explicitly, once, scoped to this repo, instead of being
+;; asked on every file open.
+(add-to-list 'safe-local-variable-directories
+             (expand-file-name "~/allrepos/TrustOrchestrationService/"))
 
 (use-package aidermacs
   :bind (("C-c a" . aidermacs-transient-menu))

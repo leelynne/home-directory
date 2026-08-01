@@ -3,6 +3,13 @@
 ;; Bootstrap-y type things
 ;;; Code:
 
+;; GUI/daemon Emacs doesn't run as a login shell, so it won't see PATH
+;; additions from .bash_profile/.local_environment (e.g. $HOME/apps/bin) on
+;; its own. Pull them in explicitly.
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
 ;; Keep Emacs-generated state files out of the config directory
 ;; These must be set before no-littering loads so it redirects paths correctly
 (use-package no-littering
