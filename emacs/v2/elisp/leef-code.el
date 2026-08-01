@@ -1,4 +1,4 @@
-;;; leef-code.el --- Settings for various languages
+;;; leef-code.el --- Settings for various languages  -*- lexical-binding: t; -*-
 ;;
 ;; Author: leef
 
@@ -7,7 +7,15 @@
 ;; generic
 (use-package flycheck
   :bind* (("C-." . flycheck-next-error)
-		 ("C-," . flycheck-previous-error)))
+		 ("C-," . flycheck-previous-error))
+  :custom
+  ;; eglot reports diagnostics through flymake; flycheck 38+ consumes them
+  ;; directly via the `eglot-check' checker, which keeps the bindings above and
+  ;; consult-flycheck working in LSP buffers. nil so eglot's diagnostics chain
+  ;; to the command checkers rather than replacing them.
+  (flycheck-eglot-exclusive nil)
+  :config
+  (global-flycheck-eglot-mode 1))
 (use-package consult-flycheck)
 
 (use-package treesit-auto
@@ -48,10 +56,9 @@
   :hook ((yaml-mode . whitespace-mode)
          (yaml-mode . subword-mode)))
 
-;; bash
-(add-hook 'sh-mode-hook (lambda ()
-						  (lsp)))
-(require 'lsp-bash)
+;; bash -- eglot maps sh-mode/bash-ts-mode to bash-language-server by default
+(add-hook 'sh-mode-hook #'eglot-ensure)
+(add-hook 'bash-ts-mode-hook #'eglot-ensure)
 
 ;; terraform
 (use-package terraform-mode)
@@ -84,38 +91,70 @@
   :config
   (add-hook 'scala-mode-hook (lambda ()
 							   (subword-mode +1))))
-;; Metals is a scala LSP
-(use-package lsp-metals
-  :custom
-  ;; Metals claims to support range formatting by default but it supports range
-  ;; formatting of multiline strings only. You might want to disable it so that
-  ;; emacs can use indentation provided by scala-mode.
-  (lsp-metals-server-args '("-J-Dmetals.allow-multiline-string-formatting=off"))
-  :hook (scala-mode . lsp))
+;; Metals is a scala LSP. It claims to support range formatting but only does so
+;; for multiline strings, so turn it off and let scala-mode handle indentation.
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((scala-mode scala-ts-mode)
+                 . ("metals" "-J-Dmetals.allow-multiline-string-formatting=off"))))
+(add-hook 'scala-mode-hook #'eglot-ensure)
 
-;; java
-(use-package lsp-java)
-(add-hook 'java-mode-hook #'lsp)
-(add-hook 'java-mode-hook (lambda ()
-                            ;;(add-hook 'before-save-hook #'lsp-format-buffer t t)
-                            ;;(add-hook 'before-save-hook #'lsp-organize-imports t t)
-                            (setq lsp-headerline-breadcrumb-enable t)
-                            (setq lsp-ui-doc-delay 2) ;; slow down
-                            ;; icons are freaking huge
-                            (setq lsp-java-vmargs
-                                  `("-Xmx2G"
-                                    "-XX:+UseG1GC"
-                                    "-XX:+UseStringDeduplication"
-                                    "-javaagent:/Users/lee/.m2/repository/org/projectlombok/lombok/1.18.10/lombok-1.18.10.jar"))
-                            (setq lsp-java-format-settings-url "~/home-directory/spotless.eclipse-java-google-style.xml")
-                            (setq lsp-java-format-settings-profile "GoogleStyle")
-                            ;; CamelCase aware editing operations
-                            (subword-mode +1)
-                            (local-set-key (kbd "M-.") 'lsp-ui-peek-find-definitions)
-                            (local-set-key (kbd "M-/") 'lsp-ui-peek-find-references)
-                            (local-set-key (kbd "<C-tab>") 'company-capf)
-                            (local-set-key (kbd "C-c C-d") 'lsp-ui-doc-show)
-                          ))
+;; java -- eglot maps java-mode to jdtls by default. Two things lsp-java used to
+;; handle now have to be split by where jdtls actually wants them:
+;;
+;;   * JVM args (heap) are launch-time, so they go on the command line as
+;;     --jvm-arg=... The jdtls wrapper script forwards these to the JVM.
+;;   * Formatter settings are workspace configuration, sent as a nested :java
+;;     section. eglot matches the *top-level* section name against what the
+;;     server asks for, so flat "java.format.settings.url" keys never match.
+;;     The url must also be an absolute file:// URI -- a bare path makes jdtls
+;;     throw "URI is not absolute".
+;;
+;; No Lombok javaagent: a -javaagent pointing at a missing jar stops the JVM
+;; from booting at all ("agent library failed Agent_OnLoad"), so add it back
+;; only alongside a jar that exists.
+(defconst leef/java-format-style
+  (expand-file-name "~/home-directory/spotless.eclipse-java-google-style.xml")
+  "Eclipse formatter profile XML used for Java buffers.")
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((java-mode java-ts-mode)
+                 . ("jdtls"
+                    "--jvm-arg=-Xmx2G"
+                    "--jvm-arg=-XX:+UseG1GC"
+                    "--jvm-arg=-XX:+UseStringDeduplication"))))
+
+;; Set as a global default rather than buffer-locally: eglot reads this in a
+;; temp buffer (via hack-dir-local-variables-non-file-buffer), so a setq-local
+;; in the Java buffer would never be seen. Override per project with a
+;; .dir-locals.el entry if a repo needs a different profile.
+(setq-default eglot-workspace-configuration
+              `(:java
+                (:format
+                 (:enabled t
+                  :settings (:url ,(concat "file://" leef/java-format-style)
+                             :profile "GoogleStyle")))))
+
+(defun leef/java-eglot-setup ()
+  "Editing conveniences for Java buffers.
+
+The indent settings matter beyond local editing: eglot derives the LSP
+FormattingOptions it sends from `indent-tabs-mode' and `tab-width', and jdtls
+prefers those over the profile named in `java.format.settings.url' (see
+eclipse.jdt.ls issue #2053). They have to agree with the XML -- GoogleStyle is
+2 spaces -- or formatting silently comes back with tabs."
+  (setq-local indent-tabs-mode nil)
+  (setq-local tab-width 2)
+  (setq-local java-ts-mode-indent-offset 2)
+  (setq-local c-basic-offset 2)
+  ;; CamelCase aware editing operations
+  (subword-mode +1)
+  (local-set-key (kbd "<C-tab>") 'company-capf))
+
+(dolist (hook '(java-mode-hook java-ts-mode-hook))
+  (add-hook hook #'eglot-ensure)
+  (add-hook hook #'leef/java-eglot-setup))
 
 ;; kotlin
 (use-package kotlin-mode)
