@@ -51,7 +51,7 @@
 (require 'leef-base)
 (require 'leef-editor)
 (require 'leef-org)
-(require 'leef-lsp)
+(require 'leef-eglot)
 (require 'leef-code)
 (require 'leef-go)
 (require 'leef-caddy)
