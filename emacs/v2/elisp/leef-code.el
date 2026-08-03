@@ -15,7 +15,13 @@
   ;; to the command checkers rather than replacing them.
   (flycheck-eglot-exclusive nil)
   :config
-  (global-flycheck-eglot-mode 1))
+  (global-flycheck-eglot-mode 1)
+  ;; Inline error messages next to the code they refer to, closer to what
+  ;; lsp-ui-sideline used to show. `flycheck-annotate-suppress-echo' (on by
+  ;; default) also stops the redundant echo-area/eldoc message for the error
+  ;; at point, complementing the eldoc-echo-area-use-multiline-p change in
+  ;; leef-eglot.el rather than fighting it.
+  (global-flycheck-annotate-mode 1))
 (use-package consult-flycheck)
 
 (use-package treesit-auto
@@ -125,16 +131,25 @@
                     "--jvm-arg=-XX:+UseG1GC"
                     "--jvm-arg=-XX:+UseStringDeduplication"))))
 
-;; Set as a global default rather than buffer-locally: eglot reads this in a
-;; temp buffer (via hack-dir-local-variables-non-file-buffer), so a setq-local
-;; in the Java buffer would never be seen. Override per project with a
-;; .dir-locals.el entry if a repo needs a different profile.
-(setq-default eglot-workspace-configuration
-              `(:java
-                (:format
-                 (:enabled t
-                  :settings (:url ,(concat "file://" leef/java-format-style)
-                             :profile "GoogleStyle")))))
+;; eglot-workspace-configuration is a single global variable, so each
+;; language's section is merged into leef/eglot-workspace-configuration below
+;; rather than each doing its own setq-default and clobbering the others. Set
+;; as a global default rather than buffer-locally: eglot reads this in a temp
+;; buffer (via hack-dir-local-variables-non-file-buffer), so a setq-local in
+;; the buffer itself would never be seen. Override per project with a
+;; .dir-locals.el entry if a repo needs different settings.
+(defvar leef/eglot-workspace-configuration nil
+  "Plist merging every language's `eglot-workspace-configuration' section.")
+
+(setq leef/eglot-workspace-configuration
+      (plist-put leef/eglot-workspace-configuration
+                 :java
+                 `(:format
+                   (:enabled t
+                    :settings (:url ,(concat "file://" leef/java-format-style)
+                               :profile "GoogleStyle")))))
+
+(setq-default eglot-workspace-configuration leef/eglot-workspace-configuration)
 
 (defun leef/java-eglot-setup ()
   "Editing conveniences for Java buffers.
@@ -161,6 +176,27 @@ eclipse.jdt.ls issue #2053). They have to agree with the XML -- GoogleStyle is
 ;; was tried and rejected: 1.3GB install, spins up its own Gradle daemon, never
 ;; produced a single diagnostic in testing, and crashed on buffer revert --
 ;; consistent with its own "Alpha state" label. Revisit once it matures.
+;;
+;; debounceTime raised way past the 250ms default: kotlin-language-server has
+;; an open, maintainer-filed bug (fwcd/kotlin-language-server#42) where its
+;; background lint (a full recompile via CompilerFiles) and completion
+;; requests run on separate threads with shared, non-thread-safe compiler
+;; state, throwing ConcurrentModificationException and sometimes killing the
+;; server outright -- reproduced directly against this repo. debounceTime
+;; only paces how often a keystroke schedules a new lint (each schedule
+;; cancels the prior pending one -- see Debouncer.kt), so this doesn't fix
+;; the race, it just makes the background lint fire far less often while
+;; typing, cutting how frequently it collides with a completion request.
+;; kotlin.diagnostics.enabled=false was considered and rejected: traced the
+;; source (KotlinTextDocumentService.kt) and confirmed it only filters
+;; already-computed diagnostics before publishing -- doLint()'s
+;; sp.compileFiles() call, the actual racy work, still runs unconditionally.
+(setq leef/eglot-workspace-configuration
+      (plist-put leef/eglot-workspace-configuration
+                 :kotlin
+                 '(:diagnostics (:debounceTime 5000))))
+(setq-default eglot-workspace-configuration leef/eglot-workspace-configuration)
+
 (use-package kotlin-mode)
 (add-hook 'kotlin-mode-hook #'eglot-ensure)
 

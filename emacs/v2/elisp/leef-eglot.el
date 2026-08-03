@@ -77,7 +77,38 @@
   :after eglot
   :bind (:map eglot-mode-map
               ("C-c C-g" . consult-eglot-symbols)
-              ("C-c C-f" . consult-imenu)))
+              ("C-c C-f" . consult-imenu))
+  :config
+  ;; kotlin-language-server's workspace/symbol response omits `range' from
+  ;; SymbolInformation.location entirely (confirmed: gopls always includes
+  ;; it, kotlin-language-server never does). consult-eglot's transformer and
+  ;; grep-params functions both assume it's there and index straight into
+  ;; nil, which is the "wrong-type-argument number-or-marker-p nil" error --
+  ;; it comes from consult--marker-from-line-column being handed a nil line.
+  ;; Neither function guards against a missing range, and there's no config
+  ;; knob for it, so patch the location plist before it reaches them: default
+  ;; to line 0/character 0 (jumps to the top of the symbol's file, same as
+  ;; picking an ambiguous xref result) rather than crashing the candidate
+  ;; list entirely.
+  (defun leef/consult-eglot--ensure-range (symbol-info)
+    "Return SYMBOL-INFO with a placeholder :range if its :location lacks one."
+    (let* ((location (plist-get symbol-info :location))
+           (range (plist-get location :range)))
+      (if range
+          symbol-info
+        (plist-put (copy-sequence symbol-info)
+                   :location
+                   (plist-put (copy-sequence location)
+                              :range
+                              (list :start (list :line 0 :character 0)
+                                    :end (list :line 0 :character 0)))))))
+
+  (advice-add 'consult-eglot--transformer :around
+              (lambda (orig symbol-info)
+                (funcall orig (leef/consult-eglot--ensure-range symbol-info))))
+  (advice-add 'consult-eglot--symbol-information-to-grep-params :around
+              (lambda (orig symbol-info)
+                (funcall orig (leef/consult-eglot--ensure-range symbol-info)))))
 
 ;; cedar
 (define-derived-mode cedar-mode prog-mode "Cedar"
