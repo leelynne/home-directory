@@ -47,11 +47,30 @@
 (use-package treemacs
   :ensure t
   :defer t
+  ;; `treemacs-is-never-other-window' keeps the tree out of `C-x o' cycling,
+  ;; so focus it explicitly. `treemacs-select-window' also jumps back out to
+  ;; the last edited window when called from inside the tree.
+  :bind (("M-0"   . treemacs-select-window)
+         ("C-c t" . treemacs))
   :config
-  (setq treemacs-width 50
-        treemacs-position 'right
-		treemacs-tag-follow-mode t
-        treemacs-follow-after-init t))
+  (setq treemacs-width 35
+        treemacs-position 'left
+        treemacs-follow-after-init t
+        ;; IDE-style: keep the file tree a full-height column on the left
+        ;; rather than letting it share vertical space with other splits.
+        treemacs-display-in-side-window t
+        treemacs-is-never-other-window t
+        ;; How long to idle before the tree re-syncs to the current buffer.
+        treemacs-file-follow-delay 0.2)
+  ;; Left/right side windows span the full frame height instead of being
+  ;; boxed in by top/bottom side windows.
+  (setq window-sides-vertical t)
+  ;; Keep the tree in sync with whatever buffer is current. These are minor
+  ;; modes, not variables -- setq'ing the symbols does nothing.
+  (treemacs-follow-mode 1)      ; highlight/reveal the current file
+  (treemacs-tag-follow-mode 1)  ; also drill into the current tag/symbol
+  (treemacs-filewatch-mode 1)   ; pick up on-disk changes
+  (treemacs-git-mode 'deferred))
 
 (use-package treemacs-projectile
   :after (treemacs projectile)
