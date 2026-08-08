@@ -83,15 +83,21 @@
   (recentf-mode))
 
 ;; undo
-(use-package undo-tree
-  :diminish undo-tree
+(use-package undo-fu
+  :bind (("C-/" . undo-fu-only-undo)
+         ("C-_" . undo-fu-only-undo)
+         ("M-_" . undo-fu-only-redo)
+         ("C-?" . undo-fu-only-redo)))
+
+(use-package undo-fu-session
+  :diminish undo-fu-session-mode
   :config
-  (setq undo-tree-history-directory-alist
-	`((".*" . ,temporary-file-directory)))
-    ;; autosave the undo-tree history
-  (setq undo-tree-auto-save-history t)
-  (global-undo-tree-mode)
-  )
+  (setq undo-fu-session-directory
+	(expand-file-name "undo-fu-session" temporary-file-directory))
+  (undo-fu-session-global-mode))
+
+(use-package vundo
+  :bind ("C-x u" . vundo))
 
 ;; automatically save buffers associated with files on buffer switch
 ;; and on windows switch

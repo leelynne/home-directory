@@ -7,7 +7,6 @@
 (use-package go-mode)
 (use-package go-dlv)
 (use-package go-rename)
-(use-package go-projectile)
 (use-package go-guru)
 
 ;; Debug adapter client; replaces dap-mode, which depends on lsp-mode.
