@@ -66,7 +66,25 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(ace-window aidermacs anzu avy claude-code-ide company consult
+				consult-dir consult-eglot consult-flycheck
+				consult-flyspell consult-org-roam consult-projectile
+				dape deft diminish dockerfile-mode eat editorconfig
+				eglot eldoc-box emacs exec-path-from-shell flycheck
+				flycheck-kotlin flyspell ghostel go-dlv go-guru
+				go-mode go-rename graphql-mode hcl-mode hl-todo
+				kotlin-mode langtool magit marginalia markdown-mode
+				no-littering ob-async ob-dart ob-deno ob-go ob-http
+				ob-kotlin ob-mermaid ob-php ob-rust ob-sql-mode
+				ob-tmux ob-typescript orderless org-chef org-ref
+				org-roam org-roam-bibtex org-roam-timestamps
+				org-roam-ui ox-gfm ox-jira ox-pandoc pandoc-mode
+				projectile recentf reformatter rg s savehist
+				scala-mode string-inflection super-save templ-ts-mode
+				terraform-mode treemacs treemacs-projectile
+				treesit-auto undo-fu undo-fu-session vertico vulpea
+				vundo wgrep which-key yaml-mode zenburn-theme zotxt))
  '(package-vc-selected-packages
    '((ghostel :url "https://github.com/dakra/ghostel" :lisp-dir "lisp"))))
 (custom-set-faces
