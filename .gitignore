@@ -1,2 +1,4 @@
 emacs/v2/elpa
+emacs/v2/tree-sitter
+emacs/v2/custom.el
 *.elc

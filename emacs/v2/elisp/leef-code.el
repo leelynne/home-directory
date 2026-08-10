@@ -61,7 +61,7 @@
         treemacs-display-in-side-window t
         treemacs-is-never-other-window t
         ;; How long to idle before the tree re-syncs to the current buffer.
-        treemacs-file-follow-delay 0.2)
+        treemacs-file-follow-delay 0.1)
   ;; Left/right side windows span the full frame height instead of being
   ;; boxed in by top/bottom side windows.
   (setq window-sides-vertical t)
@@ -81,7 +81,41 @@
   :hook ((yaml-mode . whitespace-mode)
          (yaml-mode . subword-mode)))
 
-;; bash -- eglot maps sh-mode/bash-ts-mode to bash-language-server by default
+;; bash -- eglot maps sh-mode/bash-ts-mode to bash-language-server by default,
+;; but that expects the binary on PATH. Run it out of the bash-lsp Docker
+;; image instead (built from docker/bash-lsp.Dockerfile) so no local
+;; node/npm/shellcheck/shfmt install is required. -v mounts the home
+;; directory at the *same* absolute path inside the container: eglot hands
+;; the server host-side file:// URIs verbatim, with no path translation, so
+;; the container's view of the filesystem has to line up 1:1 with the host's.
+;;
+;; Connects over a plain TCP socket (localhost:7778) rather than spawning a
+;; subprocess. `docker run -i` and `docker exec -i` were both tried first and
+;; both crash-looped: the underlying bash-language-server process kept dying
+;; every few seconds, confirmed via `docker exec ... pgrep` showing a new PID
+;; each cycle. Ruled out as causes: the workspace/configuration section being
+;; null, shellcheck as the trigger (disabling it made no difference), an
+;; unstable Docker Desktop file-sharing mount (persisted through a full
+;; Docker Desktop restart with a broader share), eglot's own timeouts
+;; (`eglot-connect-timeout' is 30s, never hit) and its reconnect circuit
+;; breaker (persisted after a fully clean, unhurried single reconnect), and
+;; `global-auto-revert-mode' (persisted with it off). Feeding the exact same
+;; LSP handshake directly over a socket/FIFO with no eglot involved never
+;; crashed the server, which points at something in how Emacs manages a
+;; `docker exec`/`docker run` child process's stdio pipe specifically --
+;; TCP sidesteps that whole code path (same mechanism eglot already uses for
+;; e.g. gdscript-mode below) and has been stable in testing.
+;;
+;; The daemon must be started once (survives Emacs restarts since it's
+;; outside Emacs's process tree): socat bridges the TCP port to the
+;; server's stdio inside the container.
+;;   cd docker/ && docker compose up -d
+;; (docker/docker-compose.yml builds bash-lsp.Dockerfile and brings the
+;; container up with the volume mount, port mapping, and socat entrypoint
+;; below already wired up -- restart unless-stopped survives Docker Desktop
+;; restarts, but not a full Docker Desktop VM teardown, same as before.)
+(add-to-list 'eglot-server-programs
+             '((bash-ts-mode sh-mode) . ("localhost" 7778)))
 (add-hook 'sh-mode-hook #'eglot-ensure)
 (add-hook 'bash-ts-mode-hook #'eglot-ensure)
 
