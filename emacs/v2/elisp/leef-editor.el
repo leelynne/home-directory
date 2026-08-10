@@ -32,7 +32,8 @@
       scroll-preserve-screen-position 1)
 
 (use-package avy)
-(use-package ace-window)
+(use-package ace-window
+  :bind (("M-o" . ace-window)))
 
 (use-package flyspell
   :config

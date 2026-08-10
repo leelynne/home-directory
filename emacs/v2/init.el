@@ -9,6 +9,10 @@
 
 (package-initialize)
 
+;; Custom writes go to a dedicated, tracked file instead of this one.
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
+
 ;; load newest byte code
 (setq load-prefer-newer t)
 
@@ -27,6 +31,11 @@
      (package-refresh-contents)
      (apply orig args))))
 (advice-add 'use-package-ensure-elpa :around #'my/use-package-ensure-with-retry)
+
+;; package-selected-packages persistence is redundant: my/use-package-selected
+;; + the after-init-hook below already derive it from source every startup,
+;; which is what package-autoremove/list-packages actually consult live.
+(advice-add 'package--save-selected-packages :override #'ignore)
 
 (eval-when-compile
   (require 'use-package))
@@ -62,35 +71,3 @@
 
 
 ;;; myinit.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ace-window aidermacs anzu avy claude-code-ide company consult
-				consult-dir consult-eglot consult-flycheck
-				consult-flyspell consult-org-roam consult-projectile
-				dape deft diminish dockerfile-mode eat editorconfig
-				eglot eldoc-box emacs exec-path-from-shell flycheck
-				flycheck-kotlin flyspell ghostel go-dlv go-guru
-				go-mode go-projectile go-rename graphql-mode hcl-mode
-				hl-todo kotlin-mode langtool magit marginalia
-				markdown-mode no-littering ob-async ob-dart ob-deno
-				ob-go ob-http ob-kotlin ob-mermaid ob-php ob-rust
-				ob-sql-mode ob-tmux ob-typescript orderless org-chef
-				org-ref org-roam org-roam-bibtex org-roam-timestamps
-				org-roam-ui ox-gfm ox-jira ox-pandoc pandoc-mode pet
-				projectile recentf reformatter rg s savehist
-				scala-mode string-inflection super-save templ-ts-mode
-				terraform-mode treemacs treemacs-projectile
-				treesit-auto undo-tree vertico vulpea wgrep which-key
-				yaml-mode zenburn-theme zotxt))
- '(package-vc-selected-packages
-   '((ghostel :url "https://github.com/dakra/ghostel" :lisp-dir "lisp"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

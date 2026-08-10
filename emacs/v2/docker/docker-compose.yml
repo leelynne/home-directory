@@ -1,0 +1,14 @@
+services:
+  bash-lsp-daemon:
+    build:
+      context: .
+      dockerfile: bash-lsp.Dockerfile
+    image: bash-lsp
+    container_name: bash-lsp-daemon
+    restart: unless-stopped
+    entrypoint: socat
+    command: ["TCP-LISTEN:7778,reuseaddr,fork", "EXEC:bash-language-server start"]
+    volumes:
+      - /Users/lee:/Users/lee
+    ports:
+      - "127.0.0.1:7778:7778"
