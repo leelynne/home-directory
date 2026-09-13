@@ -65,6 +65,11 @@
 (require 'leef-go)
 (require 'leef-python)
 (require 'leef-caddy)
+;; Temporarily disabled while testing our own openapi-lsp server via eglot —
+;; leef-openapi.el's tree-sitter mode auto-claims openapi*.yaml/swagger*.json
+;; files and installs its own xref $ref-jump backend, which would compete
+;; with eglot's LSP-backed navigation. Re-enable by uncommenting.
+;; (require 'leef-openapi)
 
 ;; warn when opening files bigger than 100MB
 ;;(setq large-file-warning-threshold 100000000)

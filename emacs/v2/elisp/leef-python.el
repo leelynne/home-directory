@@ -141,6 +141,53 @@ Advice around `pet-virtualenv-root', called with ARGS."
 ;; wins over this, so the repos listed above keep their chosen settings and
 ;; this only supplies the default for everything else.
 ;;
+;; reportUnknown{MemberType,VariableType,ArgumentType,ParameterType} off too,
+;; on top of "standard": pandas' stubs are incomplete enough that ordinary
+;; DataFrame code (df.fillna/astype/str/strip/isin, chained) still reports
+;; "Type of X is unknown" on nearly every line under "standard" alone.
+;; Confirmed on safe-tecton-features-vista: a Tecton stream feature view with
+;; no genuine type errors produced 15 of these across one file. Same call the
+;; fides-sync and neon repos noted above already made for the same reason --
+;; not losing real signal, since pandas will never have full stubs to report
+;; against.
+;;
+;; reportArgumentType off too, not just reportUnknownArgumentType -- the two
+;; are different rules. It fires as "Argument type is partially unknown" on
+;; any call whose argument type contains Unknown anywhere in it, even a
+;; nested dict value, which is different from the argument itself being
+;; wholly unknown. Confirmed on the same repo: every feature_view/service
+;; passes tags=get_tags(...) to Tecton's constructors, and get_tags (in
+;; util/tags.py) has no parameter or return annotations, so its return infers
+;; as dict[str | Unknown, str | Unknown] -- tainting every single call site
+;; repo-wide with this warning regardless of the reportUnknown* overrides
+;; above. Broader than reportUnknown*: it also catches genuine
+;; argument-type mismatches, not just unknown-type noise, so this is a
+;; slightly larger trade than the others -- accepted anyway since the actual
+;; source here is one untyped utility function, not a real bug at any call
+;; site.
+;;
+;; diagnosticSeverityOverrides here is known-unreliable over LSP
+;; workspace/configuration, independent of nesting/key format:
+;; basedpyright/eglot issues #418 and #894 both show the setting reaching the
+;; server correctly (verifiable via `eglot-show-workspace-configuration') and
+;; still not applying, or applying once after a reconnect and reverting on
+;; the next re-analysis. Reproduced here: warnings this override should
+;; suppress came back on ordinary edit-and-save with no config change, even
+;; though the server's cached config plist still had the override present.
+;; This is a confirmed upstream bug in pyright/basedpyright's LSP config
+;; handling, not an eglot or nesting-format problem -- the maintainers
+;; confirmed it also reproduces in VS Code, and that it works via Pylance
+;; (Microsoft's closed-source server) but not open-source pyright/basedpyright.
+;;
+;; Left in as a best-effort default for editors/setups where it happens to
+;; take -- typeCheckingMode above is NOT affected by this bug and reliably
+;; applies via workspace/configuration, only diagnosticSeverityOverrides is
+;; flaky. If a repo needs this reliably, use a project-local
+;; pyrightconfig.json or [tool.basedpyright] in pyproject.toml instead --
+;; those are read directly from disk on every analysis pass rather than
+;; pushed over LSP, and multiple reports confirm that path is reliable where
+;; this one is not.
+;;
 ;; Merged into leef/eglot-workspace-configuration rather than set directly:
 ;; eglot-workspace-configuration is a single global variable, so each language
 ;; has to plist-put into the shared one or it clobbers the :java and :kotlin
@@ -149,7 +196,13 @@ Advice around `pet-virtualenv-root', called with ARGS."
   (setq leef/eglot-workspace-configuration
         (plist-put leef/eglot-workspace-configuration
                    :basedpyright
-                   '(:analysis (:typeCheckingMode "standard"))))
+                   '(:analysis (:typeCheckingMode "standard"
+                                 :diagnosticSeverityOverrides
+                                 (:reportUnknownMemberType "none"
+                                  :reportUnknownVariableType "none"
+                                  :reportUnknownArgumentType "none"
+                                  :reportUnknownParameterType "none"
+                                  :reportArgumentType "none")))))
   (setq-default eglot-workspace-configuration
                 leef/eglot-workspace-configuration))
 
@@ -205,6 +258,29 @@ Advice around `pet-virtualenv-root', called with ARGS."
     :args `("format" "--quiet"
             ,@(when buffer-file-name
                 (list "--stdin-filename" buffer-file-name))
+            "-"))
+
+  ;; A few repos lint with black instead of ruff in CI (their .opspec/op.yml or
+  ;; similar runs `black --check` as a blocking stage, with no ruff config at
+  ;; all). ruff-format is not a safe stand-in there: newer ruff reformats
+  ;; f-string internals black leaves alone -- confirmed on
+  ;; safe-tecton-features-vista, where `ruff format --check` wants to rewrite
+  ;; `{7+i}' to `{7 + i}' and normalise quotes inside f-strings in files black
+  ;; already accepts. Saving with ruff-format-on-save-mode there produces
+  ;; unrelated churn that `black --check' then rejects.
+  ;;
+  ;; So this is defined but deliberately not added to python-mode-hook /
+  ;; python-ts-mode-hook below -- enabling it globally would just move the
+  ;; conflict onto every ruff-formatted repo instead. It's opt-in per repo via
+  ;; .dir-locals.el: `(ruff-format-on-save-mode -1)' + `(black-format-on-save-mode 1)'.
+  ;; See safe-tecton-features-vista/.dir-locals.el for the concrete example.
+  ;; ruff-isort stays on in that setup too -- black has no opinion on import
+  ;; order, so there is nothing to conflict with.
+  (reformatter-define black-format
+    :program "black"
+    :args `("--quiet"
+            ,@(when buffer-file-name
+                (list "--stdin-filename" buffer-file-name))
             "-")))
 
 (defun leef/python-eglot-setup ()
@@ -256,6 +332,14 @@ python-indent-offset, using defaults: 4\" message."
   ;; same as jq-format-on-save-mode in leef-code.el.
   (add-hook hook #'ruff-isort-on-save-mode)
   (add-hook hook #'ruff-format-on-save-mode))
+
+;; Repos whose .dir-locals.el swaps ruff-format for black-format (see the
+;; black-format reformatter-define above) do it via `eval' forms toggling the
+;; on-save minor modes, which are always :risky -- Emacs won't offer to
+;; remember those, only a plain y/n prompt on every file open. Trust each such
+;; repo explicitly, once, same as the ktlint entry in leef-code.el.
+(add-to-list 'safe-local-variable-directories
+             (expand-file-name "~/allrepos/safe-tecton-features-vista/"))
 
 (provide 'leef-python)
 ;;; leef-python.el ends here

@@ -47,3 +47,4 @@ source ~/.local_environment
 
 . "$HOME/.local/bin/env"
 . "$HOME/.cargo/env"
+eval "$(/Users/lee/.local/bin/mise activate bash)"

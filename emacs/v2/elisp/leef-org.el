@@ -86,16 +86,16 @@
    :after org-roam
    :init
    (require 'consult-org-roam)
+   ;; Keep org-roam buffers mingled into the plain "Buffers" section of
+   ;; consult-buffer instead of split into their own "Org-roam" group.
+   ;; Must be set before `consult-org-roam-mode' runs, since that's what
+   ;; decides (once, at enable time) whether to install the split.
+   (setq consult-org-roam-buffer-enabled nil)
    ;; Activate the minor mode
    (consult-org-roam-mode 1)
    :custom
    ;; Use `ripgrep' for searching with `consult-org-roam-search'
    (consult-org-roam-grep-func #'consult-ripgrep)
-   ;; Configure a custom narrow key for `consult-buffer'
-   (consult-org-roam-buffer-narrow-key ?r)
-   ;; Display org-roam buffers right after non-org-roam buffers
-   ;; in consult-buffer (and not down at the bottom)
-   (consult-org-roam-buffer-after-buffers t)
    :config
    ;; Eventually suppress previewing for certain functions
    (consult-customize
@@ -108,6 +108,7 @@
    ("C-c n B" . consult-org-roam-backlinks-recursive)
    ("C-c n l" . consult-org-roam-forward-links)
    ("C-c n r" . consult-org-roam-search))
+
 ;;                             )
 ;;      org-adapt-indentation nil)
 ;;(add-to-list 'org-structure-template-alist
