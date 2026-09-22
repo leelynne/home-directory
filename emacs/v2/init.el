@@ -71,6 +71,22 @@
 ;; with eglot's LSP-backed navigation. Re-enable by uncommenting.
 ;; (require 'leef-openapi)
 
+;; Per-host overrides: ~/.emacs.d/hosts/<hostname>.el, sourced if present.
+;; Not synced — see hosts/.gitignore.
+;; Uses scutil's LocalHostName (Bonjour name, set in System Settings >
+;; Sharing) rather than (system-name), since (system-name) changes to an
+;; unrelated DNS-assigned value while connected to VPN.
+(let* ((hostname (when (eq system-type 'darwin)
+                    (string-trim
+                     (shell-command-to-string "scutil --get LocalHostName"))))
+       (host-file (and hostname
+                        (not (string-empty-p hostname))
+                        (expand-file-name
+                         (concat "hosts/" hostname ".el")
+                         user-emacs-directory))))
+  (when (and host-file (file-exists-p host-file))
+    (load host-file nil 'nomessage)))
+
 ;; warn when opening files bigger than 100MB
 ;;(setq large-file-warning-threshold 100000000)
 

@@ -8,6 +8,11 @@
 ;; its own. Pull them in explicitly.
 (use-package exec-path-from-shell
   :config
+  ;; mise's PATH additions (e.g. ~/.config/node/bin) come from `mise activate`
+  ;; in .bashrc, which only runs for interactive shells. The default
+  ;; exec-path-from-shell invocation is non-interactive and misses it, so
+  ;; force -i here.
+  (setq exec-path-from-shell-arguments '("-i"))
   (exec-path-from-shell-initialize))
 
 ;; Keep Emacs-generated state files out of the config directory
@@ -47,12 +52,27 @@
 (use-package diminish)
 (use-package s) ;; string manipulation
 (use-package rg) ;; ripgrep
- ;; terminal emulators
-(use-package eat)
+ ;; terminal emulator (ghostel: native libghostty-vt rendering, so it
+ ;; doesn't hit the redisplay-driven flicker that eat could under fast
+ ;; repainting programs -- eat has been removed).
 (use-package ghostel
   :vc (:url "https://github.com/dakra/ghostel"
        :lisp-dir "lisp"
-       :rev :newest))
+       :rev :newest)
+  :bind (("C-c t" . ghostel)
+         ("C-c T" . ghostel-project))
+  :config
+  ;; Let M-o (ace-window) reach Emacs instead of being forwarded to the
+  ;; embedded terminal.
+  (add-to-list 'ghostel-keymap-exceptions "M-o")
+  ;; Belt-and-suspenders: these minor modes have nothing useful to do
+  ;; in a terminal buffer and can only add redraw overhead.
+  (add-hook 'ghostel-mode-hook
+            (lambda ()
+              (display-line-numbers-mode -1)
+              (hl-line-mode -1)
+              (visual-line-mode -1)
+              (font-lock-mode -1))))
 
 (global-unset-key (kbd "C-x c"))
 (global-set-key (kbd "C-x C-=") 'text-scale-increase)
@@ -150,6 +170,26 @@
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
   )
 
+(defvar leef-vertico-sort-cycle
+  (list #'vertico-sort-history-length-alpha ;; the normal Vertico default
+        #'vertico-sort-alpha)
+  "Sort functions `leef/vertico-cycle-sort' cycles through, in order.")
+
+(defun leef/vertico-cycle-sort ()
+  "Cycle the current Vertico session through `leef-vertico-sort-cycle'.
+
+Useful when date-named candidates (e.g. digests/2026-09-15.org)
+sink to the bottom under the default history/length/alpha sort —
+cycle to alphabetical instead, on demand, without leaving the minibuffer."
+  (interactive)
+  (let* ((pos (or (cl-position vertico-sort-function leef-vertico-sort-cycle) -1))
+         (next (nth (mod (1+ pos) (length leef-vertico-sort-cycle))
+                    leef-vertico-sort-cycle)))
+    (setq-local vertico-sort-function next)
+    (message "Vertico sort: %s" next))
+  (setq vertico--input t) ;; force candidate list to refresh
+  (vertico--exhibit))
+
 (use-package vertico
   :custom
   ;; (vertico-scroll-margin 0) ;; Different scroll margin
@@ -157,7 +197,10 @@
   ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
   (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :bind
+  (:map vertico-map
+        ("M-s a" . leef/vertico-cycle-sort)))
 
 
 ;; Emacs minibuffer configurations.
