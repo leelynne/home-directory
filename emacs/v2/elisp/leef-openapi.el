@@ -1,4 +1,4 @@
-;;; leef-openapi.el --- Settings for OpenAPI specs
+;;; leef-openapi.el --- Settings for OpenAPI specs  -*- lexical-binding: t; -*-
 ;;
 ;; Author: leef
 

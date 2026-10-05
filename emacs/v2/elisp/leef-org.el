@@ -1,4 +1,4 @@
-;;; leef-org.el --- Settings for org-mode
+;;; leef-org.el --- Settings for org-mode  -*- lexical-binding: t; -*-
 ;;
 ;; Author: leef
 
@@ -9,7 +9,7 @@
 (use-package org-roam
   :bind (("C-c n f" . org-roam-node-find))
   :init
-  (setq org-roam-directory "~/Dropbox/org/notes"
+  (setq org-roam-directory "~/roam"
         org-roam-db-location "~/.cache/org-roam/org-roam.db")
   :config (org-roam-db-autosync-mode))
 
@@ -25,7 +25,6 @@
 ;;             "\s"))
 
 (use-package zotxt)
-(use-package deft)
 (use-package org-roam-bibtex)
 (use-package org-roam-ui)
 ;;(use-package org-noter)
@@ -54,8 +53,8 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (setq org-startup-with-inline-images t)
 
-(setq org-directory "~/Dropbox/org/"
-	  org-image-actual-width nil
+(setq org-directory "~/org/"
+      org-image-actual-width nil
       ;; default is empty; set org-agenda-files per-machine in
       ;; ~/.emacs.d/hosts/<hostname>.el instead
       org-agenda-files nil)
@@ -170,26 +169,6 @@
     "\\documentclass{extarticle}"
     ("\\section{%s}" . "\\section*{%s}")
     ("\\subsection{%s}" . "\\subsection*{%s}")))
-;; Deft
-(defun cm/deft-parse-title (file contents)
-  "Parse the given FILE and CONTENTS and determine the title.
-  If `deft-use-filename-as-title' is nil, the title is taken to
-  be the first non-empty line of the FILE.  Else the base name of the FILE is
-  used as title."
-  (let ((begin (string-match "^#\\+[tT][iI][tT][lL][eE]: .*$" contents)))
-	(if begin
-	    (string-trim (substring contents begin (match-end 0)) "#\\+[tT][iI][tT][lL][eE]: *" "[\n\t ]+")
-	  (deft-base-filename file))))
-
-(advice-add 'deft-parse-title :override #'cm/deft-parse-title)
-(setq deft-recursive t
-      deft-directory "~/Dropbox/org"
-      deft-strip-summary-regexp	  (concat "\\("
-		                                  "[\n\t]" ;; blank
-		                                  "\\|^#\\+[[:alpha:]_]+:.*$" ;; org-mode metadata
-		                                  "\\|^:PROPERTIES:\n\\(.+\n\\)+:END:\n"
-		                                  "\\)"))
-(setq deft-extensions '("org" "md" "txt"))
 
 ;; org-roam
 (require 'org-roam)

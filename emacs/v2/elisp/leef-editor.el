@@ -1,4 +1,4 @@
-;;; leef-editor.el --- Editor-ish based settings
+;;; leef-editor.el --- Editor-ish based settings  -*- lexical-binding: t; -*-
 ;;
 ;; Author: leef
 
