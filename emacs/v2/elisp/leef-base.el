@@ -1,4 +1,4 @@
-;;; leef-base.el --- Base Config
+;;; leef-base.el --- Base Config  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;; Bootstrap-y type things
 ;;; Code:

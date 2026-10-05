@@ -1,4 +1,4 @@
-;;; leef-caddy.el --- Settings for Caddyfiles
+;;; leef-caddy.el --- Settings for Caddyfiles  -*- lexical-binding: t; -*-
 ;;
 ;; Author: leef
 

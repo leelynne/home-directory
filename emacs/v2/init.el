@@ -1,7 +1,15 @@
-;;; myinit.el --- my crap
+;;; myinit.el --- my crap  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;
 ;;; Code:
+
+;; Keep native-compiled .eln files out of ~/.emacs.d, alongside
+;; no-littering's ~/.cache/emacs/var/. Done first so packages loaded below
+;; compile into the new location.
+(when (and (featurep 'native-compile)
+           (fboundp 'startup-redirect-eln-cache))
+  (startup-redirect-eln-cache
+   (convert-standard-filename (expand-file-name "~/.cache/emacs/eln-cache/"))))
 
 (require 'package)
 (add-to-list 'package-archives
@@ -73,12 +81,14 @@
 
 ;; Per-host overrides: ~/.emacs.d/hosts/<hostname>.el, sourced if present.
 ;; Not synced — see hosts/.gitignore.
-;; Uses scutil's LocalHostName (Bonjour name, set in System Settings >
+;; On macOS uses scutil's LocalHostName (Bonjour name, set in System Settings >
 ;; Sharing) rather than (system-name), since (system-name) changes to an
-;; unrelated DNS-assigned value while connected to VPN.
-(let* ((hostname (when (eq system-type 'darwin)
-                    (string-trim
-                     (shell-command-to-string "scutil --get LocalHostName"))))
+;; unrelated DNS-assigned value while connected to VPN. Elsewhere uses the
+;; short (system-name).
+(let* ((hostname (if (eq system-type 'darwin)
+                     (string-trim
+                      (shell-command-to-string "scutil --get LocalHostName"))
+                   (car (split-string (system-name) "\\."))))
        (host-file (and hostname
                         (not (string-empty-p hostname))
                         (expand-file-name
