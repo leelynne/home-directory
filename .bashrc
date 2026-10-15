@@ -45,6 +45,9 @@ fi
 
 source ~/.local_environment
 
-. "$HOME/.local/bin/env"
-. "$HOME/.cargo/env"
-eval "$(/Users/lee/.local/bin/mise activate bash)"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+[ -x "$HOME/.local/bin/mise" ] && eval "$("$HOME/.local/bin/mise" activate bash)"
+
+# Hermes Agent command
+case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac

@@ -140,7 +140,10 @@
 (use-package string-inflection)
 
 ;; templ
-(use-package templ-ts-mode)
+;; Disabled: calls go-ts-mode--iota-query-supported-p, which Emacs 31's
+;; go-ts-mode no longer defines. Remove :disabled once upstream is fixed.
+(use-package templ-ts-mode
+  :disabled t)
 
 ;; grep editing
 (use-package wgrep)

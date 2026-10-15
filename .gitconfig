@@ -4,5 +4,6 @@
 [push]
 [user]
 	name = Lee
+	email = leelynne+gh@protonmail.com
 [core]
 	editor = emacsclient
