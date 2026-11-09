@@ -2,8 +2,10 @@
 [url "ssh://git@github.com/"]
      insteadOf = https://github.com/
 [push]
+	autoSetupRemote = true
 [user]
-	name = Lee
-	email = leelynne+gh@protonmail.com
-[core]
-	editor = emacsclient
+	useConfigOnly = true
+
+# Machine-local settings. Ignored where the file is missing.
+[include]
+	path = ~/.gitconfig.local
